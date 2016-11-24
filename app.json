@@ -11,7 +11,7 @@
     "env": {
         "token": {
             "description": "Please input your token for Slack bot integration",
-            "value": "xoxb-108832151093-MyvLY2rYgWbbRUNbKfhLwaGh"
+            "value": ""
         }
     }
 }
