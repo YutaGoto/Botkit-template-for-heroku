@@ -6,7 +6,7 @@
     "bot",
     "Slack"
   ],
-    "repository": "https://github.com/okajax/Botkit-template-for-heroku",
+    "repository": "https://github.com/YutaGoto/Botkit-template-for-heroku",
     "logo": "https://raw.githubusercontent.com/okajax/Botkit-template-for-heroku/master/Let's_try_Botkit.png",
     "env": {
         "token": {
