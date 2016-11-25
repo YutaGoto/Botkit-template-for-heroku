@@ -49,7 +49,7 @@ var bot = controller.spawn({
 controller.hears(['挨拶', 'こんにちは', 'Bot', 'あなた', '誰', 'だれ', '自己紹介'], 'direct_message,direct_mention,mention', function (bot, message) {
 
     // bot.reply()で、botに発言をさせます。
-    bot.reply(message, 'こんにちは！私は *Botkit製のBot* です！ \n _いろんな事ができますよ！_ :smiley:');
+    bot.reply(message, 'こんにちは！私は *Botkit製のBot* です！ \n _まだそこまでいろんなことができません。_ :sweat_smile:');
 
 });
 
@@ -125,6 +125,22 @@ controller.hears(['ハイタッチ'], 'direct_message,direct_mention,mention,amb
 
 });
 
+controller.hears(['なす', 'ナス'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
+
+    bot.reply(message, ':oguri:');
+
+    // 絵文字リアクションを追加
+    bot.api.reactions.add({
+        timestamp: message.ts,
+        channel: message.channel,
+        name: 'raising_hand', // ここで絵文字名を指定します (例 : smilely, muscle など)
+    }, function (err, res) {
+        if (err) {
+            bot.botkit.log('Failed to add emoji reaction :(', err); // エラーが出たとき用の出力
+        }
+    });
+
+});
 
 
 //=========================================================
