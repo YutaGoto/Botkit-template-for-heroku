@@ -53,24 +53,11 @@ controller.hears(['こんにちは'], 'direct_message,direct_mention,mention', f
 
 });
 
-controller.hears(['昼ごはん', 'ランチ', 'おなかすいた', 'お腹すいた'], 'direct_message,direct_mention,mention', function (bot, message) {
-
-    function shuffle(array) {
-        var n = array.length, t, i;
-
-        while (n) {
-            i = Math.floor(Math.random() * n--);
-            t = array[n];
-            array[n] = array[i];
-            array[i] = t;
-        }
-
-        return array;
-    }
+controller.hears(['昼ごはん', 'ランチ', 'おなかすいた', 'お腹すいた', 'はらへった'], 'direct_message,direct_mention,mention', function (bot, message) {
 
     var lunch = ['中華', 'そば', 'にいむら', 'オリジンキッチン', 'もちもち', '丸亀製麺', '裏の中華']
-    lunch = shuffle(lunch);
-    bot.reply(message, lunch[1]);
+    var lunch_talk = lunch[Math.floor(Math.random() * lunch.length)];
+    bot.reply(message, lunch_talk);
 
 });
 
