@@ -46,10 +46,31 @@ var bot = controller.spawn({
 //    mention: @付きで言及されたメッセージに反応します
 //    ambient: どんなメッセージタイプにも反応します
 
-controller.hears(['挨拶', 'こんにちは', 'Bot', 'あなた', '誰', 'だれ', '自己紹介'], 'direct_message,direct_mention,mention', function (bot, message) {
+controller.hears(['こんにちは'], 'direct_message,direct_mention,mention', function (bot, message) {
 
     // bot.reply()で、botに発言をさせます。
     bot.reply(message, 'こんにちは！私は *Botkit製のBot* です！ \n _まだそこまでいろんなことができません。_ :sweat_smile:');
+
+});
+
+controller.hears(['昼ごはん', 'ランチ', 'おなかすいた', 'お腹すいた'], 'direct_message,direct_mention,mention', function (bot, message) {
+
+    function shuffle(array) {
+        var n = array.length, t, i;
+
+        while (n) {
+            i = Math.floor(Math.random() * n--);
+            t = array[n];
+            array[n] = array[i];
+            array[i] = t;
+        }
+
+        return array;
+    }
+
+    var lunch = ['中華', 'そば', 'にいむら', 'オリジンキッチン', 'もちもち', '丸亀製麺', '裏の中華']
+    lunch = shuffle(lunch);
+    bot.reply(message, lunch[1]);
 
 });
 
