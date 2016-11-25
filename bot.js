@@ -259,14 +259,13 @@ controller.hears(['(.*)'], 'direct_message,direct_mention,mention', function (bo
                 "呼んでみただけ、じゃないですよね？",
                 "はい、なんでしょうか",
                 "はい、今日はとても悪い天気ですね",
-                "はいはーい",
                 "いかがなさいましたか",
                 "はっ！どうしました？！",
                 "はい、" + user_info.name + "さん",
                 "はい",
                 "グーッと背伸びをしましょう",,
                 "話題が尽きましたか？",
-                "はーい、なんですか？"
+                "はい、なんでしょう？"
             ];
             var random_talk = talk_pattern[Math.floor(Math.random() * talk_pattern.length)];
             bot.reply(message, random_talk);
