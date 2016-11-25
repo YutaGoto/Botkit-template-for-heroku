@@ -252,8 +252,24 @@ controller.hears(['(.*)'], 'direct_message,direct_mention,mention', function (bo
         if (user_info && user_info.name) {
 
             // ▼ ユーザーデータが保存されていたときの処理 ▼
-
-            bot.reply(message, 'こんにちは *' + user_info.name + '* さん！ :grin:');
+            var talk_pattern = [ 
+                user_info.name + "さん呼びましたか",
+                "お呼びですか？",
+                "はい、今日はとても良い天気ですね",
+                "呼んでみただけ、じゃないですよね？",
+                "はい、なんでしょうか",
+                "はい、今日はとても悪い天気ですね",
+                "はいはーい",
+                "いかがなさいましたか",
+                "はっ！どうしました？！",
+                "はい、" + user_info.name + "さん",
+                "はい",
+                "グーッと背伸びをしましょう",,
+                "話題が尽きましたか？",
+                "はーい、なんですか？"
+            ];
+            var random_talk = talk_pattern[Math.floor(Math.random() * talk_pattern.length)];
+            bot.reply(message, random_talk);
 
         } else {
 
