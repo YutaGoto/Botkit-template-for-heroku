@@ -61,24 +61,27 @@ controller.hears(['昼ごはん', 'ランチ', 'おなかすいた', 'お腹す�
 
 controller.hears(['天気', 'てんき'], 'direct_message,direct_mention,mention', function (bot, message) {
     bot.reply(message, "天気情報を取得しています...");
-    var http = require('http');
-    http.get("http://weather.livedoor.com/forecast/webservice/json/v1?city=130010", function (result) { 
-        var time = new Date();
-        var dateCond = time.getHours() < 18 ? "今日" : "明日";
-        var body = '';
-        result.setEncoding('utf8');
-        result.on('data', function(data) {
-            body += data;
+    bot.startConversation(message, function (err, convo) {
+        var http = require('http');
+        http.get("http://weather.livedoor.com/forecast/webservice/json/v1?city=130010", function (result) { 
+            var time = new Date();
+            var dateCond = time.getHours() < 18 ? "今日" : "明日";
+            var body = '';
+            result.setEncoding('utf8');
+            result.on('data', function(data) {
+                body += data;
+            });
+            result.on('end', function(data) {
+                var v = JSON.parse(body);
+                if (time.getHours() < 18) {
+                    var weather = v.forecasts[0];
+                } else {
+                    var weather = v.forecasts[1];
+                }
+                convo.say(weather.dateLabel + "の" + v.title + "は" + weather.telop + "です。最高気温は" + weather.temperature["max"]["celsius"] + "度です！");
+                convo.next();
+            });
         });
-        result.on('end', function(data) {
-            var v = JSON.parse(body);
-            if (time.getHours() < 18) {
-                var weather = v.forecasts[0];
-            } else {
-                var weather = v.forecasts[1];
-            }
-            bot.reply(weather.dateLabel + "の" + v.title + "は" + weather.telop + "です。最高気温は" + weather.temperature["max"]["celsius"] + "度です！")
-        })
     });
 });
 
