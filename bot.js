@@ -61,6 +61,20 @@ controller.hears(['昼ごはん', 'ランチ', 'おなかすいた', 'お腹す�
 
 });
 
+controller.hears(['天気', 'てんき'], 'direct_message,direct_mention,mention', function (bot, message) {
+    bot.reply(message, "天気情報を取得しています...");
+    api.http.get("http://weather.livedoor.com/forecast/webservice/json/v1", {"city": 130010}, function (result) {
+        var time = new Date();
+        var dateCond = time.getHours() < 18 ? "今日" : "明日";
+        var weather = JSON.parse(result);
+        weather["forecasts"].forEach(function (oneDay, index, origin) {
+            if (oneDay["dateLabel"] == dateCond) {
+                bot.reply(message, dateCond + "の東京都の天気は" + oneDay["telop"] + "です。最高気温は" + oneDay["temperature"]["max"]["celsius"] + "度です！");
+            }
+        });
+    });
+});
+
 
 
 //=========================================================
