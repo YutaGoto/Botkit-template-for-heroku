@@ -161,7 +161,7 @@ controller.hears(['ハイタッチ'], 'direct_message,direct_mention,mention,amb
 
 });
 
-controller.hears(['なす', 'ナス'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
+controller.hears(['なす', 'ナス', '茄子', 'なすび'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
 
     bot.reply(message, ':oguri:');
 
@@ -278,7 +278,7 @@ controller.hears(['(.*)'], 'direct_message,direct_mention,mention', function (bo
                 "はっ！どうしました？！",
                 "はい、" + user_info.name + "さん",
                 "はい",
-                "グーッと背伸びをしましょう",,
+                "グーッと背伸びをしましょう",
                 "話題が尽きましたか？",
                 "はい、なんでしょう？"
             ];
@@ -289,7 +289,7 @@ controller.hears(['(.*)'], 'direct_message,direct_mention,mention', function (bo
 
             // ▼ ユーザーデータが保存されていなかった場合の処理 ▼
 
-            bot.reply(message, 'はじめまして！\n`「◯◯って呼んで」`って話しかけると、名前を覚えますよ!');
+            bot.reply(message, 'はじめまして！\n`「◯◯って呼んで」`って話しかけると、名前を忘れるまで覚えますよ!');
 
         }
     });
