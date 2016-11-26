@@ -29,6 +29,20 @@ var bot = controller.spawn({
 }).startRTM();
 
 
+// HTTP API Request
+var requestAjax = function(endpoint, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function(){
+        if (this.readyState==4 && this.status==200) {
+            callback(this.response);
+        }
+    };
+    xhr.responseType = 'json';
+    xhr.open('GET',endpoint,true);
+    xhr.send();
+};
+
+
 
 //=========================================================
 // 基本的な受け答え
@@ -63,7 +77,7 @@ controller.hears(['昼ごはん', 'ランチ', 'おなかすいた', 'お腹す�
 
 controller.hears(['天気', 'てんき'], 'direct_message,direct_mention,mention', function (bot, message) {
     bot.reply(message, "天気情報を取得しています...");
-    api.http.get("http://weather.livedoor.com/forecast/webservice/json/v1", {"city": 130010}, function (result) {
+    requestAjax("http://weather.livedoor.com/forecast/webservice/json/v1?city=130010", function (result) {
         var time = new Date();
         var dateCond = time.getHours() < 18 ? "今日" : "明日";
         var weather = JSON.parse(result);
