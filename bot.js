@@ -200,28 +200,33 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
                 pattern: 'グー', // マッチさせる単語
                 callback: function (response, convo) {
                     if (selectJanken === "r") {
+                        convo.say("グー！");
                         sayAiko(convo);
                     } else if (selectJanken === "s") {
+                        convo.say("チョキ！");
                         sayLose(convo);
                     } else if (selectJanken === "p") {
+                        convo.say("パー！");
                         sayWin(convo);
                     } else {
-                        convo.say("すみません。じゃんけんができませんでした。また遊びましょう！");
+                        convo.say("すみません。じゃんけんができませんでした。また遊びましょう！:+1:");
                     }
-                    convo.next(); // convo.next()で、会話を次に進めます。通常は、会話が終了します。
-                }
+                    convo.next();                }
             },
             {
                 pattern: 'チョキ',
                 callback: function (response, convo) {
                     if (selectJanken === "r") {
+                        convo.say("グー！");
                         seyWin(convo);
                     } else if (selectJanken === "s") {
+                        convo.say("チョキ！");
                         sayAiko(convo);
                     } else if (selectJanken === "p") {
+                        convo.say("パー！");
                         sayLose(convo);
                     } else {
-                        convo.say("すみません。じゃんけんができませんでした。また遊びましょう！");
+                        convo.say("すみません。じゃんけんができませんでした。また遊びましょう！:+1:");
                     }
                     convo.next();
                 }
@@ -230,10 +235,13 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
                 pattern: 'パー',
                 callback: function (response, convo) {
                     if (selectJanken === "r") {
+                        convo.say("グー！");
                         seyLose(convo);
                     } else if (selectJanken === "s") {
+                        convo.say("チョキ！");
                         sayWin(convo);
                     } else if (selectJanken === "p") {
+                        convo.say("パー！");
                         sayAiko(convo);
                     } else {
                         convo.say("すみません。じゃんけんができませんでした。また遊びましょう！:+1:");
