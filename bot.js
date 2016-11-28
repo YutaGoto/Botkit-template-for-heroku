@@ -44,18 +44,49 @@ var bot = controller.spawn({
 //    mention: @付きで言及されたメッセージに反応します
 //    ambient: どんなメッセージタイプにも反応します
 
+controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', function (bot, message) {
+
+    // bot.reply()で、botに発言をさせます。
+    var notifyTalk = [
+        '`こんにちは`, `おはよう`, そのほかの呼びかけに対するリプライの種類が増えました。',
+        'Botと *じゃんけん* ができます。'
+    ];
+    var joinNotifyTalk = notifyTalk.join(",");
+    bot.reply(message, joinNotifyTalk);
+
+});
+
 controller.hears(['こんにちは'], 'direct_message,direct_mention,mention', function (bot, message) {
 
     // bot.reply()で、botに発言をさせます。
-    bot.reply(message, 'こんにちは！私は *Botkit製のBot* です！ \n _まだそこまでいろんなことができません。_ :sweat_smile:');
+    var helloTalk = [
+        'こんにちは！私は *Botkit製のBot* です！ \n _まだそこまでいろんなことができません。_ :sweat_smile:',
+        'こんにちは！調子はいかがですか？',
+        'こんにちは！ :oguri: '
+    ];
+    var selectHelloTalk = helloTalk[Math.floor(Math.random() * helloTalk.length)];
+    bot.reply(message, selectHelloTalk);
+
+});
+
+controller.hears(['おはよう'], 'direct_message,direct_mention,mention', function (bot, message) {
+
+    var today = new Date().toLocaleDateString();
+    var morningTalk = [
+        'おはようございます！今日は' + today + 'です。',
+        'おはようございます！今日も一日頑張るぞい！',
+        'おはようございます！朝ごはんは食べましたか？'
+    ];
+    var selectMorningTalk = morningTalk[Math.floor(Math.random() * morningTalk.length)];
+    bot.reply(message, morningTalk);
 
 });
 
 controller.hears(['昼ごはん', 'ランチ', 'おなかすいた', 'お腹すいた', 'はらへった'], 'direct_message,direct_mention,mention', function (bot, message) {
 
-    var lunch = ['中華', 'そば', 'にいむら', 'オリジンキッチン', 'もちもち', '丸亀製麺', '裏の中華']
+    var lunch = ['中華', 'そば', 'にいむら', 'オリジンキッチン', 'もちもち', '丸亀製麺', '裏の中華', 'インドカレー', 'ココイチ', '代々木ビレッジ'];
     var lunch_talk = lunch[Math.floor(Math.random() * lunch.length)];
-    bot.reply(message, lunch_talk);
+    bot.reply(message, lunch_talk + "で食べましょう！");
 
 });
 
@@ -125,6 +156,101 @@ controller.hears(['ラーメン'], 'direct_message,direct_mention,mention', func
                     // ▼ どのパターンにもマッチしない時の処理 ▼
 
                     convo.say('うーん、おしいです！:no_good:');
+                    convo.repeat(); // convo.repeat()で、質問を繰り返します。
+                    convo.next(); // 会話を次に進めます。この場合、最初の質問にも戻ります。
+                }
+            }
+        ]);
+
+    })
+
+});
+
+controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', function (bot, message) {
+
+    function sayAiko() {
+        convo.say('あいこですね。また遊びましょう！:wink:');
+    }
+
+    function sayWin() {
+        convo.say('私の勝ちです！じゃんけん強いのがばれましたね:muscle:。また遊びましょう！:blush:');
+    }
+
+    function sayLose() {
+        controller.storage.users.get(message.user, function (err, user_info) {
+
+            if (user_info && user_info.name) {
+                var yourName = user_info.name + "さん";
+            } else {
+                var yourName = "あなた";
+            }
+            convo.say('あなたの勝ちです！:congratulations:' + yourName + "はお強いのですね:sushi:。また遊びましょう！:hugging_face:");
+        });
+    }
+
+    bot.reply(message, 'じゃんけんですか？いいですね！:fist::v::hand:');
+    var rockPatterns = ["ぐー", "グー", "rock", ":fist:"];
+    var sizzorsPatterns = ["ちょき", "チョキ", "ちー", "チー", "sizzors", ":v:"];
+    var paperPatterns = ["ぱー", "パー", "paper", ":hand:"];
+
+    // 会話を開始します。
+    bot.startConversation(message, function (err, convo) {
+        var jankenRPS = ["r", "s", "p"];
+        var selectJanken = jankenRPS[Math.floor(Math.random() * jankenRPS.length)];
+        // convo.ask() で質問をします。
+        convo.ask('じゃんけーん...', [
+            {
+                pattern: rockPatterns, // マッチさせる単語
+                callback: function (response, convo) {
+                    if (selectJanken === "r") {
+                        seyAiko();
+                    } else if (selectJanken === "s") {
+                        sayLose();
+                    } else if (selectJanken === "p") {
+                        sayWin();
+                    } else {
+                        convo.say("すみません。じゃんけんができませんでした。また遊びましょう！");
+                    }
+                    convo.next(); // convo.next()で、会話を次に進めます。通常は、会話が終了します。
+                }
+            },
+            {
+                pattern: sizzorsPatterns,
+                callback: function (response, convo) {
+                    if (selectJanken === "r") {
+                        seyWin();
+                    } else if (selectJanken === "s") {
+                        sayAiko();
+                    } else if (selectJanken === "p") {
+                        sayLose();
+                    } else {
+                        convo.say("すみません。じゃんけんができませんでした。また遊びましょう！");
+                    }
+                    convo.next();
+                }
+            },
+            {
+                pattern: paperPatterns,
+                callback: function (response, convo) {
+                    cif (selectJanken === "r") {
+                        seyLose();
+                    } else if (selectJanken === "s") {
+                        sayWin();
+                    } else if (selectJanken === "p") {
+                        sayAiko();
+                    } else {
+                        convo.say("すみません。じゃんけんができませんでした。また遊びましょう！:+1:");
+                    }
+                    convo.next();
+                }
+            },
+            {
+                default: true,
+                callback: function (response, convo) {
+
+                    // ▼ どのパターンにもマッチしない時の処理 ▼
+
+                    convo.say('よくわかりませんでした。また遊びましょう');
                     convo.repeat(); // convo.repeat()で、質問を繰り返します。
                     convo.next(); // 会話を次に進めます。この場合、最初の質問にも戻ります。
                 }
