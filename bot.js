@@ -74,7 +74,12 @@ controller.hears(['天気', 'てんき'], 'direct_message,direct_mention,mention
             result.on('end', function(data) {
                 var v = JSON.parse(body);
                 var weather = v.forecasts[0];
-                convo.say(weather.dateLabel + "の" + v.title + "は" + weather.telop + "です。最高気温は" + weather.temperature["max"]["celsius"] + "度です！");
+                if (time.getHours() < 18) {
+                    var weather = v.forecasts[0];
+                } else {
+                    var weather = v.forecasts[1];
+                }
+                convo.say(weather.dateLabel + "の" + v.title + "は" + weather.telop + "です。最高気温は" + weather.temperature.max.celsius + "度です！");
                 convo.next();
             });
         });
