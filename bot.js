@@ -51,7 +51,7 @@ controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', func
         '`こんにちは`, `おはよう`, そのほかの呼びかけに対するリプライの種類が増えました。',
         'Botと *じゃんけん* ができます。'
     ];
-    var joinNotifyTalk = notifyTalk.join(",");
+    var joinNotifyTalk = notifyTalk.join("\n");
     bot.reply(message, joinNotifyTalk);
 
 });
@@ -211,7 +211,8 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
                     } else {
                         convo.say("すみません。じゃんけんができませんでした。また遊びましょう！:+1:");
                     }
-                    convo.next();                }
+                    convo.next();        
+                }
             },
             {
                 pattern: 'チョキ',
