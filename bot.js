@@ -232,7 +232,7 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
             {
                 pattern: paperPatterns,
                 callback: function (response, convo) {
-                    cif (selectJanken === "r") {
+                    if (selectJanken === "r") {
                         seyLose();
                     } else if (selectJanken === "s") {
                         sayWin();
