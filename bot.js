@@ -219,7 +219,7 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
                 callback: function (response, convo) {
                     if (selectJanken === "r") {
                         convo.say("グー！");
-                        seyWin(convo);
+                        sayWin(convo);
                     } else if (selectJanken === "s") {
                         convo.say("チョキ！");
                         sayAiko(convo);
@@ -237,7 +237,7 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
                 callback: function (response, convo) {
                     if (selectJanken === "r") {
                         convo.say("グー！");
-                        seyLose(convo);
+                        sayLose(convo);
                     } else if (selectJanken === "s") {
                         convo.say("チョキ！");
                         sayWin(convo);
