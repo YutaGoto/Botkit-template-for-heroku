@@ -78,7 +78,7 @@ controller.hears(['おはよう'], 'direct_message,direct_mention,mention', func
         'おはようございます！朝ごはんは食べましたか？'
     ];
     var selectMorningTalk = morningTalk[Math.floor(Math.random() * morningTalk.length)];
-    bot.reply(message, morningTalk);
+    bot.reply(message, selectMorningTalk);
 
 });
 
@@ -200,7 +200,7 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
         // convo.ask() で質問をします。
         convo.ask('じゃんけーん...', [
             {
-                pattern: rockPatterns, // マッチさせる単語
+                pattern: rockPatterns[0], // マッチさせる単語
                 callback: function (response, convo) {
                     if (selectJanken === "r") {
                         seyAiko();
