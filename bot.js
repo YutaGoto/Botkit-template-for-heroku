@@ -195,9 +195,9 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
         var jankenRPS = ["r", "s", "p"];
         var selectJanken = jankenRPS[Math.floor(Math.random() * jankenRPS.length)];
         // convo.ask() で質問をします。
-        convo.ask('じゃんけーん...', [
+        convo.ask('じゃんけーん... `グー` `チョキ` `パー`', [
             {
-                pattern: 'ぐー'|'グー'|'rock'|':fist:', // マッチさせる単語
+                pattern: 'グー', // マッチさせる単語
                 callback: function (response, convo) {
                     if (selectJanken === "r") {
                         sayAiko(convo);
@@ -212,7 +212,7 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
                 }
             },
             {
-                pattern: "ちょき"|"チョキ"|"ちー"|"チー"|"sizzors"|":v:",
+                pattern: 'チョキ',
                 callback: function (response, convo) {
                     if (selectJanken === "r") {
                         seyWin(convo);
@@ -227,7 +227,7 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
                 }
             },
             {
-                pattern: "ぱー"|"パー"|"paper"|":hand:",
+                pattern: 'パー',
                 callback: function (response, convo) {
                     if (selectJanken === "r") {
                         seyLose(convo);
