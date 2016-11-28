@@ -168,15 +168,15 @@ controller.hears(['ラーメン'], 'direct_message,direct_mention,mention', func
 
 controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', function (bot, message) {
 
-    function sayAiko() {
+    function sayAiko(convo) {
         convo.say('あいこですね。また遊びましょう！:wink:');
     }
 
-    function sayWin() {
+    function sayWin(convo) {
         convo.say('私の勝ちです！じゃんけん強いのがばれましたね:muscle:。また遊びましょう！:blush:');
     }
 
-    function sayLose() {
+    function sayLose(convo) {
         controller.storage.users.get(message.user, function (err, user_info) {
 
             if (user_info && user_info.name) {
@@ -200,14 +200,14 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
         // convo.ask() で質問をします。
         convo.ask('じゃんけーん...', [
             {
-                pattern: rockPatterns[0], // マッチさせる単語
+                pattern: rockPatterns[0] || rockPatterns[1], // マッチさせる単語
                 callback: function (response, convo) {
                     if (selectJanken === "r") {
-                        seyAiko();
+                        seyAiko(convo);
                     } else if (selectJanken === "s") {
-                        sayLose();
+                        sayLose(convo);
                     } else if (selectJanken === "p") {
-                        sayWin();
+                        sayWin(convo);
                     } else {
                         convo.say("すみません。じゃんけんができませんでした。また遊びましょう！");
                     }
@@ -218,11 +218,11 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
                 pattern: sizzorsPatterns,
                 callback: function (response, convo) {
                     if (selectJanken === "r") {
-                        seyWin();
+                        seyWin(convo);
                     } else if (selectJanken === "s") {
-                        sayAiko();
+                        sayAiko(convo);
                     } else if (selectJanken === "p") {
-                        sayLose();
+                        sayLose(convo);
                     } else {
                         convo.say("すみません。じゃんけんができませんでした。また遊びましょう！");
                     }
@@ -233,11 +233,11 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
                 pattern: paperPatterns,
                 callback: function (response, convo) {
                     if (selectJanken === "r") {
-                        seyLose();
+                        seyLose(convo);
                     } else if (selectJanken === "s") {
-                        sayWin();
+                        sayWin(convo);
                     } else if (selectJanken === "p") {
-                        sayAiko();
+                        sayAiko(convo);
                     } else {
                         convo.say("すみません。じゃんけんができませんでした。また遊びましょう！:+1:");
                     }
@@ -251,7 +251,6 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
                     // ▼ どのパターンにもマッチしない時の処理 ▼
 
                     convo.say('よくわかりませんでした。また遊びましょう');
-                    convo.repeat(); // convo.repeat()で、質問を繰り返します。
                     convo.next(); // 会話を次に進めます。この場合、最初の質問にも戻ります。
                 }
             }
