@@ -197,7 +197,7 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
         // convo.ask() で質問をします。
         convo.ask('じゃんけーん...', [
             {
-                pattern: "ぐー"|"グー"|"rock"|":fist:", // マッチさせる単語
+                pattern: 'ぐー'|'グー'|'rock'|':fist:', // マッチさせる単語
                 callback: function (response, convo) {
                     if (selectJanken === "r") {
                         sayAiko(convo);
