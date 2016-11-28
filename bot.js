@@ -189,9 +189,6 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
     }
 
     bot.reply(message, 'じゃんけんですか？いいですね！:fist::v::hand:');
-    var rockPatterns = ["ぐー", "グー", "rock", ":fist:"];
-    var sizzorsPatterns = ["ちょき", "チョキ", "ちー", "チー", "sizzors", ":v:"];
-    var paperPatterns = ["ぱー", "パー", "paper", ":hand:"];
 
     // 会話を開始します。
     bot.startConversation(message, function (err, convo) {
@@ -200,10 +197,10 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
         // convo.ask() で質問をします。
         convo.ask('じゃんけーん...', [
             {
-                pattern: rockPatterns[0] || rockPatterns[1], // マッチさせる単語
+                pattern: "ぐー"|"グー"|"rock"|":fist:", // マッチさせる単語
                 callback: function (response, convo) {
                     if (selectJanken === "r") {
-                        seyAiko(convo);
+                        sayAiko(convo);
                     } else if (selectJanken === "s") {
                         sayLose(convo);
                     } else if (selectJanken === "p") {
@@ -215,7 +212,7 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
                 }
             },
             {
-                pattern: sizzorsPatterns,
+                pattern: "ちょき"|"チョキ"|"ちー"|"チー"|"sizzors"|":v:",
                 callback: function (response, convo) {
                     if (selectJanken === "r") {
                         seyWin(convo);
@@ -230,7 +227,7 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
                 }
             },
             {
-                pattern: paperPatterns,
+                pattern: "ぱー"|"パー"|"paper"|":hand:",
                 callback: function (response, convo) {
                     if (selectJanken === "r") {
                         seyLose(convo);
