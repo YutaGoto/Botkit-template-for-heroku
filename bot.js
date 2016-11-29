@@ -411,7 +411,7 @@ controller.hears(['なす', 'ナス', '茄子', 'なすび'], 'direct_message,di
 
 controller.hears(['(.*)'], 'direct_message,direct_mention,mention', function (bot, message) {
     var http = require('http');
-    var url = "http://yukari-factory.com/api/v1/yukari_sentences/random?word=" + message.text;
+    var url = "http://yukari-factory.com/api/v1/yukari_sentences/random";
     bot.startConversation(message, function (err, convo) {
         http.get(url, function (res) { 
             res.setEncoding('utf8');
