@@ -414,8 +414,8 @@ controller.hears(['なす', 'ナス', '茄子', 'なすび'], 'direct_message,di
 
 controller.hears(['(.*)'], 'direct_message,direct_mention,mention', function (bot, message) {
     var http = require('http');
-    console.log(message.watsonData.output.text + "@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    http.get("http://yukari-factory.com/api/v1/yukari_sentences/random?word=" + message.watsonData.output.text, function (result) { 
+    console.log(message.watsonData + "@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    http.get("http://yukari-factory.com/api/v1/yukari_sentences/random?word=" + message.watsonData, function (result) { 
         result.setEncoding('utf8');
         var body = "";
         result.on('data', function(data) {
