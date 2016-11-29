@@ -48,21 +48,117 @@ controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', func
 
     // bot.reply()で、botに発言をさせます。
     var notifyTalk = [
-        '`こんにちは`, `おはよう`, そのほかの呼びかけに対するリプライの種類が増えました。',
-        'Botと *じゃんけん* ができます。'
+        '`○○って呼んで` の○○は一文字以上でないと反応しないように修正しました。',
+        '何にもマッチしない単語・文章で呼びかけると、テキトーに反応します。'
     ];
     var joinNotifyTalk = notifyTalk.join("\n");
     bot.reply(message, joinNotifyTalk);
 
 });
 
+controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', function (bot, message) {
+
+    var functionTalk = [
+        '`こんにちは`, `おはよう` にはいくつかのパターンの反応をします。',
+        '`じゃんけん` と呼びかけると、じゃんけんをすることができます。',
+        '`天気` と呼びかけると、18時以前は今日の・18時以降は明日の天気予報をお知らせします。',
+        '`昼ごはん` と呼びかけると、昼ごはんにおすすめの場所をお知らせします。',
+        '`なす` とつぶやくと、なすの反応が来ます。',
+        '`○○って呼んで` と呼びかけると、○○にある文字列であなたの名前を忘れるまで覚えます。'
+    ];
+    var joinFunctionTalk = functionTalk.join("\n");
+    bot.reply(message, joinFunctionTalk);
+
+});
+
+//=========================================================
+// 名前を覚える(データを保存する)
+//=========================================================
+
+// Botが、シャットダウン/再起動するまでの間、データを保持する事ができます。
+
+// 保存、取得、削除、すべて削除 の4つの操作ができます。
+
+//  [例]
+//    controller.storage.users.save({id: message.user, foo:'bar'}, function(err) { ... });
+//    controller.storage.users.get(id, function(err, user_data) {...});
+//    controller.storage.users.delete(id, function(err) {...});
+//    controller.storage.users.all(function(err, all_user_data) {...});
+
+
+// Botkitは、「ユーザー」「チャンネル」「チーム」ごとにデータを保持できます。
+// それぞれ、下記のように呼び出せます。
+
+//  [例]
+//    controller.storage.users.***
+//    controller.storage.channels.***
+//    controller.storage.teams.***
+
+
+controller.hears(['(.+)って呼んで'], 'direct_message,direct_mention,mention', function (bot, message) {
+
+
+    // 「◯◯って呼んで」の、◯◯の部分を取り出します。
+    // message.match[1] には、hearsの正規表現にマッチした単語が入っています。
+
+    var name_from_msg = message.match[1];
+
+
+    // まず、controller.storage.users.getで、ユーザーデータを取得します。
+
+    // message.userには、ユーザーIDが入っています。
+    // ユーザーデータは、ユーザーIDと紐付けていますので、第一引数には、必ずmessage.userを入れます。
+
+    controller.storage.users.get(message.user, function (err, user_info) {
+
+        // ▼ データ取得後の処理 ▼
+
+        // ユーザーデータが存在しているかどうか調べる
+        // ※第二引数で指定した変数(ここでは'user_info')に、ユーザーデータが入っています。
+        if (!user_info) {
+
+            // ▼ ユーザーデータがなかった場合の処理 ▼
+
+            // ユーザーidとユーザー名 のオブジェクトを、user_infoとして作成します。
+            user_info = {
+                id: message.user,
+                name: name_from_msg
+            };
+
+        }
+
+        // user_infoを保存します。
+        controller.storage.users.save(user_info, function (err, id) {
+
+            // ▼ 保存完了後の処理▼
+
+            bot.reply(message, 'あなたのお名前は *' + user_info.name + '* さんですね！忘れるまで覚えておきます！');
+
+        });
+
+    });
+
+});
+
+
+
 controller.hears(['こんにちは'], 'direct_message,direct_mention,mention', function (bot, message) {
+
+    controller.storage.users.get(message.user, function (err, user_info) {
+        if (user_info && user_info.name) {
+            var yourName = user_info.name + "さん";
+        } else {
+            var yourName = "";
+        }
+    });
 
     // bot.reply()で、botに発言をさせます。
     var helloTalk = [
-        'こんにちは！私は *Botkit製のBot* です！ \n _まだそこまでいろんなことができません。_ :sweat_smile:',
-        'こんにちは！調子はいかがですか？',
-        'こんにちは！ :oguri: '
+        'こんにちは！私は *Botkit製のBot* です！',
+        'こんにちは！調子はいかがですか？'+ yourName,
+        'こんにちは！ :oguri: ',
+        'こんにちは！'+ yourName,
+        'こんにちは！ `○○って呼んで`って話しかけると、名前を忘れるまで覚えますよ!'
     ];
     var selectHelloTalk = helloTalk[Math.floor(Math.random() * helloTalk.length)];
     bot.reply(message, selectHelloTalk);
@@ -75,6 +171,8 @@ controller.hears(['おはよう'], 'direct_message,direct_mention,mention', func
     var morningTalk = [
         'おはようございます！今日は' + today + 'です。',
         'おはようございます！今日も一日頑張るぞい！',
+        'おはようございます！今日も張り切ってまいりましょう！',
+        'おはようございます！ご機嫌いかがですか？',
         'おはようございます！朝ごはんは食べましたか？'
     ];
     var selectMorningTalk = morningTalk[Math.floor(Math.random() * morningTalk.length)];
@@ -82,7 +180,7 @@ controller.hears(['おはよう'], 'direct_message,direct_mention,mention', func
 
 });
 
-controller.hears(['昼ごはん', 'ランチ', 'おなかすいた', 'お腹すいた', 'はらへった'], 'direct_message,direct_mention,mention', function (bot, message) {
+controller.hears(['昼ごはん', 'おなかすいた', 'お腹すいた'], 'direct_message,direct_mention,mention', function (bot, message) {
 
     var lunch = ['中華', 'そば', 'にいむら', 'オリジンキッチン', 'もちもち', '丸亀製麺', '裏の中華', 'インドカレー', 'ココイチ', '代々木ビレッジ'];
     var lunch_talk = lunch[Math.floor(Math.random() * lunch.length)];
@@ -306,78 +404,6 @@ controller.hears(['なす', 'ナス', '茄子', 'なすび'], 'direct_message,di
 
 });
 
-
-//=========================================================
-// 名前を覚える(データを保存する)
-//=========================================================
-
-// Botが、シャットダウン/再起動するまでの間、データを保持する事ができます。
-
-// 保存、取得、削除、すべて削除 の4つの操作ができます。
-
-//  [例]
-//    controller.storage.users.save({id: message.user, foo:'bar'}, function(err) { ... });
-//    controller.storage.users.get(id, function(err, user_data) {...});
-//    controller.storage.users.delete(id, function(err) {...});
-//    controller.storage.users.all(function(err, all_user_data) {...});
-
-
-// Botkitは、「ユーザー」「チャンネル」「チーム」ごとにデータを保持できます。
-// それぞれ、下記のように呼び出せます。
-
-//  [例]
-//    controller.storage.users.***
-//    controller.storage.channels.***
-//    controller.storage.teams.***
-
-
-controller.hears(['(.+)って呼んで'], 'direct_message,direct_mention,mention', function (bot, message) {
-
-
-    // 「◯◯って呼んで」の、◯◯の部分を取り出します。
-    // message.match[1] には、hearsの正規表現にマッチした単語が入っています。
-
-    var name_from_msg = message.match[1];
-
-
-    // まず、controller.storage.users.getで、ユーザーデータを取得します。
-
-    // message.userには、ユーザーIDが入っています。
-    // ユーザーデータは、ユーザーIDと紐付けていますので、第一引数には、必ずmessage.userを入れます。
-
-    controller.storage.users.get(message.user, function (err, user_info) {
-
-        // ▼ データ取得後の処理 ▼
-
-        // ユーザーデータが存在しているかどうか調べる
-        // ※第二引数で指定した変数(ここでは'user_info')に、ユーザーデータが入っています。
-        if (!user_info) {
-
-            // ▼ ユーザーデータがなかった場合の処理 ▼
-
-            // ユーザーidとユーザー名 のオブジェクトを、user_infoとして作成します。
-            user_info = {
-                id: message.user,
-                name: name_from_msg
-            };
-
-        }
-
-        // user_infoを保存します。
-        controller.storage.users.save(user_info, function (err, id) {
-
-            // ▼ 保存完了後の処理▼
-
-            bot.reply(message, 'あなたのお名前は *' + user_info.name + '* さんですね！忘れるまで覚えておきます！');
-
-        });
-
-    });
-
-});
-
-
-
 //=========================================================
 // どれにも当てはまらなかった場合の返答
 //=========================================================
@@ -388,7 +414,7 @@ controller.hears(['(.+)って呼んで'], 'direct_message,direct_mention,mention
 
 controller.hears(['(.*)'], 'direct_message,direct_mention,mention', function (bot, message) {
     var http = require('http');
-    console.log(message);
+    console.log(message + "@@@@@@@@@@@@@@@@@@@@@@@@@@");
     http.get("http://yukari-factory.com/api/v1/yukari_sentences/random?word=" + message, function (result) { 
         result.setEncoding('utf8');
         var body = "";
