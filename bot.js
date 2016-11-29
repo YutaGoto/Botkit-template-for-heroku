@@ -331,7 +331,7 @@ controller.hears(['なす', 'ナス', '茄子', 'なすび'], 'direct_message,di
 //    controller.storage.teams.***
 
 
-controller.hears(['(.*)って呼んで'], 'direct_message,direct_mention,mention', function (bot, message) {
+controller.hears(['(.+)って呼んで'], 'direct_message,direct_mention,mention', function (bot, message) {
 
 
     // 「◯◯って呼んで」の、◯◯の部分を取り出します。
@@ -387,38 +387,17 @@ controller.hears(['(.*)って呼んで'], 'direct_message,direct_mention,mention
 // 「当てはまらなかった場合の返答」を作成できます。
 
 controller.hears(['(.*)'], 'direct_message,direct_mention,mention', function (bot, message) {
-
-
-    // ユーザーデータを取得
-    controller.storage.users.get(message.user, function (err, user_info) {
-
-        if (user_info && user_info.name) {
-
-            // ▼ ユーザーデータが保存されていたときの処理 ▼
-            var talk_pattern = [ 
-                user_info.name + "さん呼びましたか",
-                "お呼びですか？",
-                "はい、今日はとても良い天気ですね",
-                "呼んでみただけ、じゃないですよね？",
-                "はい、なんでしょうか",
-                "はい、今日はとても悪い天気ですね",
-                "いかがなさいましたか",
-                "はっ！どうしました？！",
-                "はい、" + user_info.name + "さん",
-                "はい",
-                "グーッと背伸びをしましょう",
-                "話題が尽きましたか？",
-                "はい、なんでしょう？"
-            ];
-            var random_talk = talk_pattern[Math.floor(Math.random() * talk_pattern.length)];
-            bot.reply(message, random_talk);
-
-        } else {
-
-            // ▼ ユーザーデータが保存されていなかった場合の処理 ▼
-
-            bot.reply(message, 'はじめまして！\n`「◯◯って呼んで」`って話しかけると、名前を忘れるまで覚えますよ!');
-
-        }
+    var http = require('http');
+    console.log(message);
+    http.get("http://yukari-factory.com/api/v1/yukari_sentences/random?word=" + message, function (result) { 
+        result.setEncoding('utf8');
+        var body = "";
+        result.on('data', function(data) {
+            body += data;
+        });
+        result.on('end', function(data) {
+            var m = JSON.parse(body);
+            convo.say(m.result);
+        });
     });
 });
