@@ -140,8 +140,6 @@ controller.hears(['(.+)って呼んで'], 'direct_message,direct_mention,mention
 
 });
 
-
-
 controller.hears(['こんにちは'], 'direct_message,direct_mention,mention', function (bot, message) {
 
     controller.storage.users.get(message.user, function (err, user_info) {
@@ -415,7 +413,6 @@ controller.hears(['なす', 'ナス', '茄子', 'なすび'], 'direct_message,di
 controller.hears(['(.*)'], 'direct_message,direct_mention,mention', function (bot, message) {
     var http = require('http');
     var url = "http://yukari-factory.com/api/v1/yukari_sentences/random?word=" + message.text;
-    console.log(url);
     http.get(url, function (res) { 
         res.setEncoding('utf8');
         var body = "";
