@@ -397,7 +397,7 @@ controller.hears(['(.*)'], 'direct_message,direct_mention,mention', function (bo
         });
         result.on('end', function(data) {
             var m = JSON.parse(body);
-            convo.say(m.result);
+            bot.replay(message, m.result);
         });
     });
 });
