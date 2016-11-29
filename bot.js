@@ -153,9 +153,8 @@ controller.hears(['こんにちは'], 'direct_message,direct_mention,mention', f
     // bot.reply()で、botに発言をさせます。
     var helloTalk = [
         'こんにちは！私は *Botkit製のBot* です！',
-        'こんにちは！調子はいかがですか？'+ yourName,
+        'こんにちは！調子はいかがですか？',
         'こんにちは！ :oguri: ',
-        'こんにちは！'+ yourName,
         'こんにちは！ `○○って呼んで`って話しかけると、名前を忘れるまで覚えますよ!'
     ];
     var selectHelloTalk = helloTalk[Math.floor(Math.random() * helloTalk.length)];
@@ -413,15 +412,18 @@ controller.hears(['なす', 'ナス', '茄子', 'なすび'], 'direct_message,di
 controller.hears(['(.*)'], 'direct_message,direct_mention,mention', function (bot, message) {
     var http = require('http');
     var url = "http://yukari-factory.com/api/v1/yukari_sentences/random?word=" + message.text;
-    http.get(url, function (res) { 
-        res.setEncoding('utf8');
-        var body = "";
-        res.on('data', function(data) {
-            body += data;
-        });
-        res.on('end', function(data) {
-            var m = JSON.parse(body);
-            bot.reply(message, m.result);
+    bot.startConversation(message, function (err, convo) {
+        http.get(url, function (res) { 
+            res.setEncoding('utf8');
+            var body = "";
+            res.on('data', function(data) {
+                body += data;
+            });
+            res.on('end', function(data) {
+                var m = JSON.parse(body);
+                convo.say(m.result);
+                convo.next();
+            });
         });
     });
 });
