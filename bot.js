@@ -414,13 +414,13 @@ controller.hears(['なす', 'ナス', '茄子', 'なすび'], 'direct_message,di
 
 controller.hears(['(.*)'], 'direct_message,direct_mention,mention', function (bot, message) {
     var http = require('http');
-    http.get("http://yukari-factory.com/api/v1/yukari_sentences/random?word=" + message.text, function (result) { 
-        result.setEncoding('utf8');
+    http.get("http://yukari-factory.com/api/v1/yukari_sentences/random?word=" + message.text, function (res) { 
+        res.setEncoding('utf8');
         var body = "";
-        result.on('data', function(data) {
+        res.on('data', function(data) {
             body += data;
         });
-        result.on('end', function(data) {
+        res.on('end', function(data) {
             var m = JSON.parse(body);
             bot.reply(message, m.result);
         });
