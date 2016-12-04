@@ -48,8 +48,8 @@ controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', func
 
     // bot.reply()で、botに発言をさせます。
     var notifyTalk = [
-        '`○○って呼んで` の○○は一文字以上でないと反応しないように修正しました。',
-        '何にもマッチしない単語・文章で呼びかけると、テキトーに反応します。'
+        '`iPhone10` とつぶやくと、iPhone10っぽい反応をします。',
+        '`詳しい天気` と呼びかけると、詳しい天気予報をします。'
     ];
     var joinNotifyTalk = notifyTalk.join("\n");
     bot.reply(message, joinNotifyTalk);
@@ -61,9 +61,11 @@ controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', func
     var functionTalk = [
         '`こんにちは`, `おはよう` にはいくつかのパターンの反応をします。',
         '`じゃんけん` と呼びかけると、じゃんけんをすることができます。',
+        '`詳しい天気` と呼びかけると、今の詳しい天気予報をお知らせします。',
         '`天気` と呼びかけると、18時以前は今日の・18時以降は明日の天気予報をお知らせします。',
         '`昼ごはん` と呼びかけると、昼ごはんにおすすめの場所をお知らせします。',
         '`なす` とつぶやくと、なすの反応が来ます。',
+        '`iPhone10` とつぶやくと、iPhone10っぽい反応をします。',
         '`○○って呼んで` と呼びかけると、○○にある文字列であなたの名前を忘れるまで覚えます。'
     ];
     var joinFunctionTalk = functionTalk.join("\n");
@@ -177,6 +179,26 @@ controller.hears(['昼ごはん', 'おなかすいた', 'お腹すいた'], 'dir
 
 });
 
+controller.hears(['くわしい天気', '詳しい天気'], 'direct_message,direct_mention,mention', function (bot, message) {
+    bot.reply(message, "詳しい天気情報を取得しています...");
+    bot.startConversation(message, function (err, convo) {
+        var http = require('http');
+        http.get("http://weather.livedoor.com/forecast/webservice/json/v1?city=130010", function (result) { 
+            var body = '';
+            result.setEncoding('utf8');
+            result.on('data', function(data) {
+                body += data;
+            });
+            result.on('end', function(data) {
+                var v = JSON.parse(body);
+                var description = v.description;
+                convo.say(description);
+                convo.next();
+            });
+        });
+    });
+});
+
 controller.hears(['天気', 'てんき'], 'direct_message,direct_mention,mention', function (bot, message) {
     bot.reply(message, "天気情報を取得しています...");
     bot.startConversation(message, function (err, convo) {
@@ -204,7 +226,13 @@ controller.hears(['天気', 'てんき'], 'direct_message,direct_mention,mention
     });
 });
 
+controller.hears(['iPhone10'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
 
+    var iphoneArray = [':longiphone1:',':longiphone2:',':longiphone3:',':longiphone4:'];
+    var iPhone_talk = iphoneArray.join("\n");
+    bot.reply(message, iPhone_talk);
+
+});
 
 //=========================================================
 // 質問形式の会話
