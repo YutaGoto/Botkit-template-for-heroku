@@ -65,7 +65,7 @@ controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', func
         '`昼ごはん` と呼びかけると、昼ごはんにおすすめの場所をお知らせします。',
         '`なす` とつぶやくと、なすの反応が来ます。',
         '`iPhone10` とつぶやくと、iPhone10っぽい反応をします。',
-        '`おみくじ` と呼びかけると、その日のおみくじできます。その日は結果が変わりません',
+        '`おみくじ` と呼びかけると、その日のおみくじできます。',
         '`○○って呼んで` と呼びかけると、○○にある文字列であなたの名前を忘れるまで覚えます。'
     ];
     var joinFunctionTalk = functionTalk.join("\n");
@@ -103,30 +103,8 @@ controller.hears(['お御籤', '御御籤', 'お神籤', '御神籤', 'おみく
     var omikujiArray = ['吉' ,'小吉' ,'大吉' ,'中吉' ,'半吉' ,'末小吉' ,'末吉' ,'凶' ,'半凶' ,'末小凶' ,'小凶' ,'中凶' ,'末凶' ,'大凶'];
     var omikujiResult = omikujiArray[Math.floor(Math.random() * omikujiArray.length)];
 
-    controller.storage.users.get(message.user, function (err, user_omikuji) {
+    bot.reply(message, '*' + user_omikuji.result + '*');
 
-        if (!user_omikuji || !user_omikuji.result) {
-
-            // ▼ ユーザーデータがなかった場合の処理 ▼
-
-            // ユーザーidとユーザー名 のオブジェクトを、user_infoとして作成します。
-            user_omikuji = {
-                id: message.user,
-                result: omikujiResult
-            };
-
-        }
-
-        // user_infoを保存します。
-        controller.storage.users.save(user_omikuji, function (err, id) {
-
-            // ▼ 保存完了後の処理▼
-
-            bot.reply(message, '*' + user_omikuji.result + '*');
-
-        });
-
-    });
 
 });
 
@@ -151,7 +129,7 @@ controller.hears(['(.+)って呼んで'], 'direct_message,direct_mention,mention
 
         // ユーザーデータが存在しているかどうか調べる
         // ※第二引数で指定した変数(ここでは'user_info')に、ユーザーデータが入っています。
-        if (!user_info || !user_info.name) {
+        if (!user_info) {
 
             // ▼ ユーザーデータがなかった場合の処理 ▼
 
