@@ -96,6 +96,40 @@ controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', func
 //    controller.storage.channels.***
 //    controller.storage.teams.***
 
+controller.hears(['お御籤', '御御籤', 'お神籤', '御神籤', 'おみくじ'], 'direct_message,direct_mention,mention', function (bot, message) {
+
+    var name_from_msg = message.match[1];
+
+    var omikujiArray = ['吉' ,'小吉' ,'大吉' ,'中吉' ,'半吉' ,'末小吉' ,'末吉' ,'凶' ,'半凶' ,'末小凶' ,'小凶' ,'中凶' ,'末凶' ,'大凶'];
+    var omikujiResult = omikujiArray[Math.floor(Math.random() * omikujiArray.length)];
+
+    controller.storage.users.get(message.user, function (err, user_omikuji) {
+
+        if (!user_omikuji) {
+
+            // ▼ ユーザーデータがなかった場合の処理 ▼
+
+            // ユーザーidとユーザー名 のオブジェクトを、user_infoとして作成します。
+            user_omikuji = {
+                id: message.user,
+                result: omikujiResult
+            };
+
+        }
+
+        // user_infoを保存します。
+        controller.storage.users.save(user_omikuji, function (err, id) {
+
+            // ▼ 保存完了後の処理▼
+
+            bot.reply(message, '*' + user_omikuji.result + '*');
+
+        });
+
+    });
+
+});
+
 
 controller.hears(['(.+)って呼んで'], 'direct_message,direct_mention,mention', function (bot, message) {
 
