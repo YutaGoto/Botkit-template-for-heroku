@@ -105,7 +105,7 @@ controller.hears(['お御籤', '御御籤', 'お神籤', '御神籤', 'おみく
 
     controller.storage.users.get(message.user, function (err, user_omikuji) {
 
-        if (!user_omikuji && !user_omikuji.result) {
+        if (!user_omikuji || !user_omikuji.result) {
 
             // ▼ ユーザーデータがなかった場合の処理 ▼
 
@@ -151,7 +151,7 @@ controller.hears(['(.+)って呼んで'], 'direct_message,direct_mention,mention
 
         // ユーザーデータが存在しているかどうか調べる
         // ※第二引数で指定した変数(ここでは'user_info')に、ユーザーデータが入っています。
-        if (!user_info && !user_info.name) {
+        if (!user_info || !user_info.name) {
 
             // ▼ ユーザーデータがなかった場合の処理 ▼
 
