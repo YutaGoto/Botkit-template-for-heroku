@@ -103,7 +103,7 @@ controller.hears(['お御籤', '御御籤', 'お神籤', '御神籤', 'おみく
     var omikujiArray = ['吉' ,'小吉' ,'大吉' ,'中吉' ,'半吉' ,'末小吉' ,'末吉' ,'凶' ,'半凶' ,'末小凶' ,'小凶' ,'中凶' ,'末凶' ,'大凶'];
     var omikujiResult = omikujiArray[Math.floor(Math.random() * omikujiArray.length)];
 
-    bot.reply(message, '*' + user_omikuji.result + '*');
+    bot.reply(message, '*' + omikujiResult + '*');
 
 
 });
