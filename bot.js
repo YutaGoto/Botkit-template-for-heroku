@@ -100,7 +100,7 @@ controller.hears(['お御籤', '御御籤', 'お神籤', '御神籤', 'おみく
 
     var name_from_msg = message.match[1];
 
-    var omikujiArray = ['吉' ,'小吉' ,'大吉' ,'中吉' ,'半吉' ,'末小吉' ,'末吉' ,'凶' ,'半凶' ,'末小凶' ,'小凶' ,'中凶' ,'末凶' ,'大凶'];
+    var omikujiArray = ['吉' ,'小吉' ,'大吉' ,'中吉' ,'半吉' ,'末小吉' ,'末吉' ,'凶' ,'半凶' ,'小凶' ,'末凶' ,'大凶'];
     var omikujiResult = omikujiArray[Math.floor(Math.random() * omikujiArray.length)];
 
     bot.reply(message, '*' + omikujiResult + '*');
@@ -185,9 +185,9 @@ controller.hears(['おはよう'], 'direct_message,direct_mention,mention', func
 
 controller.hears(['昼ごはん', 'おなかすいた', 'お腹すいた'], 'direct_message,direct_mention,mention', function (bot, message) {
 
-    var lunch = ['中華', 'そば', 'にいむら', 'オリジンキッチン', 'もちもち', '丸亀製麺', '裏の中華', 'インドカレー', 'ココイチ', '代々木ビレッジ'];
+    var lunch = ['中華', 'そば', 'にいむら', 'オリジンキッチン', 'もちもち', '丸亀製麺', '裏の中華', 'インドカレー', 'ココイチ', '代々木ビレッジ', 'カレーメシ'];
     var lunch_talk = lunch[Math.floor(Math.random() * lunch.length)];
-    bot.reply(message, lunch_talk + "で食べましょう！");
+    bot.reply(message, lunch_talk);
 
 });
 
