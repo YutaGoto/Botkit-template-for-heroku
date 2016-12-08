@@ -215,7 +215,7 @@ controller.hears(['天気', 'てんき'], 'direct_message,direct_mention,mention
     bot.reply(message, "天気情報を取得しています...");
     bot.startConversation(message, function (err, convo) {
         var http = require('http');
-        http.get("http://weather.livedoor.com/forecast/webservice/json/v1?city=130010", function (result) { 
+        http.get("http://weather.livedoor.com/forecast/webservice/json/v1?city=130010", function (result) {
             var time = new Date();
             var dateCond = time.getHours() < 18 ? "今日" : "明日";
             var body = '';
@@ -338,7 +338,7 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
                     } else {
                         convo.say("すみません。じゃんけんができませんでした。また遊びましょう！:+1:");
                     }
-                    convo.next();        
+                    convo.next();
                 }
             },
             {
@@ -445,7 +445,7 @@ controller.hears(['(.*)'], 'direct_message,direct_mention,mention', function (bo
     var http = require('http');
     var url = "http://yukari-factory.com/api/v1/yukari_sentences/random";
     bot.startConversation(message, function (err, convo) {
-        http.get(url, function (res) { 
+        http.get(url, function (res) {
             res.setEncoding('utf8');
             var body = "";
             res.on('data', function(data) {
