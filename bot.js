@@ -48,7 +48,7 @@ controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', func
 
     // bot.reply()で、botに発言をさせます。
     var notifyTalk = [
-        '`旅行先` と呼びかけると、おすすめの旅行先を教えてくれます。',
+        '`旅行先` と呼びかけると、おすすめの旅行先を教えてくれます。'
     ];
     var joinNotifyTalk = notifyTalk.join("\n");
     bot.reply(message, joinNotifyTalk);
