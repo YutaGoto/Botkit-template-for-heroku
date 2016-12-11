@@ -48,7 +48,7 @@ controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', func
 
     // bot.reply()で、botに発言をさせます。
     var notifyTalk = [
-        '`おみくじ` と呼びかけると、おみくじできます。',
+        '`旅行先` と呼びかけると、おすすめの旅行先を教えてくれます。',
     ];
     var joinNotifyTalk = notifyTalk.join("\n");
     bot.reply(message, joinNotifyTalk);
@@ -66,6 +66,7 @@ controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', func
         '`なす` とつぶやくと、なすの反応が来ます。',
         '`iPhone10` とつぶやくと、iPhone10っぽい反応をします。',
         '`おみくじ` と呼びかけると、その日のおみくじできます。',
+        '`旅行先` と呼びかけると、おすすめの旅行先を教えてくれます。',
         '`○○って呼んで` と呼びかけると、○○にある文字列であなたの名前を忘れるまで覚えます。'
     ];
     var joinFunctionTalk = functionTalk.join("\n");
@@ -100,17 +101,14 @@ controller.hears(['お御籤', '御御籤', 'お神籤', '御神籤', 'おみく
 
     var name_from_msg = message.match[1];
 
-    var omikujiArray = ['吉' ,'小吉' ,'大吉' ,'中吉' ,'半吉' ,'末小吉' ,'末吉' ,'凶' ,'半凶' ,'小凶' ,'末凶' ,'大凶', '古', 'キチ', '区', '(๑•̀ㅂ•́)و✧'];
+    var omikujiArray = ['吉' ,'小吉' ,'大吉' ,'中吉' ,'半吉' ,'末小吉' ,'末吉' ,'凶' ,'半凶' ,'小凶' ,'末凶' ,'大凶', '古', ':oguri:', 'キチ', '区', '(๑•̀ㅂ•́)و✧'];
     var omikujiResult = omikujiArray[Math.floor(Math.random() * omikujiArray.length)];
 
     bot.reply(message, '*' + omikujiResult + '*');
-
-
 });
 
 
 controller.hears(['(.+)って呼んで'], 'direct_message,direct_mention,mention', function (bot, message) {
-
 
     // 「◯◯って呼んで」の、◯◯の部分を取り出します。
     // message.match[1] には、hearsの正規表現にマッチした単語が入っています。
@@ -162,6 +160,7 @@ controller.hears(['こんにちは'], 'direct_message,direct_mention,mention', f
         'こんにちは！調子はいかがですか？',
         'こんにちは！ :oguri: ',
         'こんにちは！ `○○って呼んで`って話しかけると、名前を忘れるまで覚えますよ!'
+        'こんにちは！こんにちは！こんにちは！こんにちは！こんにちは！',
     ];
     var selectHelloTalk = helloTalk[Math.floor(Math.random() * helloTalk.length)];
     bot.reply(message, selectHelloTalk);
@@ -253,7 +252,7 @@ controller.hears(['旅行先'], 'direct_message,direct_mention,mention,ambient',
                 var c = JSON.parse(body);
                 cities = c.response.location;
                 city = cities[Math.floor(Math.random() * cities.length)];
-                bot.reply(message, prefecture + city.city);
+                bot.reply(message, '*' + prefecture + city.city + '* に行ってみましょう！:airplane_departure:');
             });
         });
     }
