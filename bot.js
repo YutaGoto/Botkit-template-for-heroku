@@ -237,6 +237,26 @@ controller.hears(['天気', 'てんき'], 'direct_message,direct_mention,mention
     });
 });
 
+controller.hears(['(.+)って何'], 'direct_message,direct_mention,mention', function (bot, message) {
+    var thing = message.match[1];
+    bot.reply(message, "を調べています...");
+    bot.startConversation(message, function (err, convo) {
+        var http = require('http');
+        http.get("http://wikipedia.simpleapi.net/api?output=json&keyword=" + thing, function (result) {
+            var body = '';
+            result.setEncoding('utf8');
+            result.on('data', function(data) {
+                body += data;
+            });
+            result.on('end', function(data) {
+                var v = JSON.parse(body);
+                convo.say(v[0].body);
+                convo.next();
+            });
+        });
+    });
+});
+
 controller.hears(['旅行先'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
     function getCity(prefecture) {
         var http = require('http');
