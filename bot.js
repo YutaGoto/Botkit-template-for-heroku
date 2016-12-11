@@ -236,11 +236,12 @@ controller.hears(['天気', 'てんき'], 'direct_message,direct_mention,mention
 });
 
 controller.hears(['(.+)って何'], 'direct_message,direct_mention,mention', function (bot, message) {
-    var thing = encodeURI(message.match[1]);
+    var thing = message.match[1];
+    var encodeThing = encodeURI(thing);
     bot.reply(message, thing + "を調べています...");
     bot.startConversation(message, function (err, convo) {
         var http = require('http');
-        http.get("http://wikipedia.simpleapi.net/api?output=json&keyword=" + thing, function (result) {
+        http.get("http://wikipedia.simpleapi.net/api?output=json&keyword=" + encodeThing, function (result) {
             var body = '';
             result.setEncoding('utf8');
             result.on('data', function(data) {
@@ -500,8 +501,10 @@ controller.hears(['なす', 'ナス', '茄子', 'なすび'], 'direct_message,di
 // 「当てはまらなかった場合の返答」を作成できます。
 
 controller.hears(['(.*)'], 'direct_message,direct_mention,mention', function (bot, message) {
+    var thing = message.match[1];
+    var encodeThing = encodeURI(thing);
     var http = require('http');
-    var url = "http://yukari-factory.com/api/v1/yukari_sentences/random";
+    var url = "http://yukari-factory.com/api/v1/yukari_sentences/random?word=" + encodeThing;
     bot.startConversation(message, function (err, convo) {
         http.get(url, function (res) {
             res.setEncoding('utf8');
