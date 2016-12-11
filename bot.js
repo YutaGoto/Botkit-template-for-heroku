@@ -99,8 +99,6 @@ controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', func
 
 controller.hears(['お御籤', '御御籤', 'お神籤', '御神籤', 'おみくじ'], 'direct_message,direct_mention,mention', function (bot, message) {
 
-    var name_from_msg = message.match[1];
-
     var omikujiArray = ['吉' ,'小吉' ,'大吉' ,'中吉' ,'半吉' ,'末小吉' ,'末吉' ,'凶' ,'半凶' ,'小凶' ,'末凶' ,'大凶', '古', ':oguri:', 'キチ', '区', '(๑•̀ㅂ•́)و✧'];
     var omikujiResult = omikujiArray[Math.floor(Math.random() * omikujiArray.length)];
 
@@ -239,7 +237,7 @@ controller.hears(['天気', 'てんき'], 'direct_message,direct_mention,mention
 
 controller.hears(['(.+)って何'], 'direct_message,direct_mention,mention', function (bot, message) {
     var thing = message.match[1];
-    bot.reply(message, "を調べています...");
+    bot.reply(message, thing + "を調べています...");
     bot.startConversation(message, function (err, convo) {
         var http = require('http');
         http.get("http://wikipedia.simpleapi.net/api?output=json&keyword=" + thing, function (result) {
