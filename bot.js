@@ -249,8 +249,13 @@ controller.hears(['(.+)って何'], 'direct_message,direct_mention,mention', fun
             });
             result.on('end', function(data) {
                 var v = JSON.parse(body);
-                convo.say(v[0].body);
-                convo.next();
+                if (v === null) {
+                    convo.say(thing + 'が見つかりませんでした。');
+                    convo.next();
+                } else {
+                    convo.say(v[0].body);
+                    convo.next();
+                }
             });
         });
     });
