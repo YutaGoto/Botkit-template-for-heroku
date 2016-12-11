@@ -236,7 +236,7 @@ controller.hears(['天気', 'てんき'], 'direct_message,direct_mention,mention
 });
 
 controller.hears(['(.+)って何'], 'direct_message,direct_mention,mention', function (bot, message) {
-    var thing = message.match[1];
+    var thing = encodeURI(message.match[1]);
     bot.reply(message, thing + "を調べています...");
     bot.startConversation(message, function (err, convo) {
         var http = require('http');
