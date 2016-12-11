@@ -159,7 +159,7 @@ controller.hears(['こんにちは'], 'direct_message,direct_mention,mention', f
         'こんにちは！私は *Botkit製のBot* です！',
         'こんにちは！調子はいかがですか？',
         'こんにちは！ :oguri: ',
-        'こんにちは！ `○○って呼んで`って話しかけると、名前を忘れるまで覚えますよ!'
+        'こんにちは！ `○○って呼んで`って話しかけると、名前を忘れるまで覚えますよ!',
         'こんにちは！こんにちは！こんにちは！こんにちは！こんにちは！',
     ];
     var selectHelloTalk = helloTalk[Math.floor(Math.random() * helloTalk.length)];
