@@ -48,7 +48,9 @@ controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', func
 
     // bot.reply()で、botに発言をさせます。
     var notifyTalk = [
-        '`旅行先` と呼びかけると、おすすめの旅行先を教えてくれます。'
+        '`旅行先` と呼びかけると、おすすめの旅行先を教えてくれます。',
+        '`○○って何` と呼びかけると、○○についてwikipedia検索します。',
+        'ランダム返信がちょっとだけ賢くなりました。'
     ];
     var joinNotifyTalk = notifyTalk.join("\n");
     bot.reply(message, joinNotifyTalk);
@@ -67,7 +69,8 @@ controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', func
         '`iPhone10` とつぶやくと、iPhone10っぽい反応をします。',
         '`おみくじ` と呼びかけると、その日のおみくじできます。',
         '`旅行先` と呼びかけると、おすすめの旅行先を教えてくれます。',
-        '`○○って呼んで` と呼びかけると、○○にある文字列であなたの名前を忘れるまで覚えます。'
+        '`○○って呼んで` と呼びかけると、○○にある文字列であなたの名前を忘れるまで覚えます。',
+        '`○○って何` と呼びかけると、○○についてwikipedia検索します。'
     ];
     var joinFunctionTalk = functionTalk.join("\n");
     bot.reply(message, joinFunctionTalk);
