@@ -50,6 +50,7 @@ controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', func
     var notifyTalk = [
         '`旅行先` と呼びかけると、おすすめの旅行先を教えてくれます。',
         '`○○って何` と呼びかけると、○○についてwikipedia検索します。',
+        '`○○のお店を検索` と呼びかけると、○○のキーワードでホットペッパーグルメの検索をします。○○は半角スペースでAnd検索できます。',
         'ランダム返信がちょっとだけ賢くなりました。'
     ];
     var joinNotifyTalk = notifyTalk.join("\n");
@@ -70,6 +71,7 @@ controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', func
         '`おみくじ` と呼びかけると、その日のおみくじできます。',
         '`旅行先` と呼びかけると、おすすめの旅行先を教えてくれます。',
         '`○○って呼んで` と呼びかけると、○○にある文字列であなたの名前を忘れるまで覚えます。',
+        '`○○のお店を検索` と呼びかけると、○○のキーワードでホットペッパーグルメの検索をします。○○は半角スペースでAnd検索できます。',
         '`○○って何` と呼びかけると、○○についてwikipedia検索します。'
     ];
     var joinFunctionTalk = functionTalk.join("\n");
@@ -269,7 +271,7 @@ controller.hears(['(.+)のお店を検索'], 'direct_message,direct_mention,ment
     var thing = message.match[1];
     var encodeWord = encodeURI(thing);
     url = 'http://webservice.recruit.co.jp/hotpepper/shop/v1/?key=' + process.env.hotpepperKey +'&format=json&keyword=' + encodeWord;
-    bot.reply(message, thing + "を調べています...");
+    bot.reply(message, thing + "でお店を調べています...");
     bot.startConversation(message, function (err, convo) {
         http.get(url, function (result) {
             var body = '';
@@ -294,7 +296,7 @@ controller.hears(['(.+)のお店を検索'], 'direct_message,direct_mention,ment
                         convo.next();
                     }
                 } else {
-                    convo.say('ヒット数が多すぎるのでキーワードを追加してください');
+                    convo.say('見つからないかヒット数が多すぎるのでキーワードを整理してください');
                     convo.next();
                 }
             });
