@@ -264,6 +264,44 @@ controller.hears(['(.+)って何'], 'direct_message,direct_mention,mention', fun
     });
 });
 
+controller.hears(['(.+)のお店を検索'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
+    var http = require('http');
+    var thing = message.match[1];
+    var encodeWord = encodeURI(thing);
+    url = 'http://webservice.recruit.co.jp/hotpepper/shop/v1/?key=' + process.env.hotpepperKey +'&format=json&keyword=' + encodeWord;
+    bot.reply(message, thing + "を調べています...");
+    bot.startConversation(message, function (err, convo) {
+        http.get(url, function (result) {
+            var body = '';
+            var shopArray = [];
+            var urlArray = [];
+            result.setEncoding('utf8');
+            result.on('data', function(data) {
+                body += data;
+            });
+            result.on('end', function(data) {
+                var v = JSON.parse(body);
+                var r = v.results;
+                if (r.shop) {
+                    if (r.shop.length > 0) {
+                        r.shop.forEach(function(val) {
+                            shopArray.push(val.name + ' : ' + val.urls.pc);
+                        });
+                        convo.say(shopArray.join('\n'));
+                        convo.next();
+                    } else {
+                        convo.say('ヒットしませんでした');
+                        convo.next();
+                    }
+                } else {
+                    convo.say('ヒット数が多すぎるのでキーワードを追加してください');
+                    convo.next();
+                }
+            });
+        });
+    });
+});
+
 controller.hears(['旅行先'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
     function getCity(prefecture) {
         var http = require('http');
