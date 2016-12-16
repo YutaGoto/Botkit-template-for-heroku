@@ -349,7 +349,7 @@ controller.hears(['iPhone10'], 'direct_message,direct_mention,mention,ambient', 
 
     bot.reply(message, "iPhone10!!!");
     var https = require('https');
-    var url = "https://slack.com/api/chat.postMessage?token=xoxb-108832151093-MyvLY2rYgWbbRUNbKfhLwaGh&channel=%23" process.env.botChannel "&text=%3Alongiphone1%3A%0A%3Alongiphone2%3A%0A%3Alongiphone3%3A%0A%3Alongiphone4%3A&username=iphone10&icon_emoji=%3Alongiphone1%3A%3Alongiphone2%3A%3Alongiphone3%3A%3Alongiphone4%3A&pretty=1"
+    var url = "https://slack.com/api/chat.postMessage?token=" + process.env.token + "&channel=%23" + process.env.botChannel + "&text=%3Alongiphone1%3A%0A%3Alongiphone2%3A%0A%3Alongiphone3%3A%0A%3Alongiphone4%3A&username=iphone10&icon_emoji=%3Alongiphone1%3A%3Alongiphone2%3A%3Alongiphone3%3A%3Alongiphone4%3A&pretty=1"
     https.get(url);
 
 });
