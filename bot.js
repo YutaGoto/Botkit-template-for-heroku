@@ -327,7 +327,7 @@ controller.hears(['旅行先'], 'direct_message,direct_mention,mention,ambient',
     function getPrefecture() {
         var http = require('http');
         var urlPrefecture = "http://geoapi.heartrails.com/api/json?method=getPrefectures";
-        http.get(urlPrefecture, function (res) {
+        http.get(urlPrefecture, function (res) {});
             res.setEncoding('utf8');
             var body = "";
             res.on('data', function(data) {
@@ -347,9 +347,10 @@ controller.hears(['旅行先'], 'direct_message,direct_mention,mention,ambient',
 
 controller.hears(['iPhone10'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
 
-    var iphoneArray = [':longiphone1:',':longiphone2:',':longiphone3:',':longiphone4:'];
-    var iPhone_talk = iphoneArray.join("\n");
-    bot.reply(message, iPhone_talk);
+    bot.reply(message, "iPhone10!!!");
+    var https = require('https');
+    var url = "https://slack.com/api/chat.postMessage?token=xoxb-108832151093-MyvLY2rYgWbbRUNbKfhLwaGh&channel=%23" process.env.botChannel "&text=%3Alongiphone1%3A%0A%3Alongiphone2%3A%0A%3Alongiphone3%3A%0A%3Alongiphone4%3A&username=iphone10&icon_emoji=%3Alongiphone1%3A%3Alongiphone2%3A%3Alongiphone3%3A%3Alongiphone4%3A&pretty=1"
+    https.get(url);
 
 });
 
