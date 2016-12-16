@@ -327,7 +327,7 @@ controller.hears(['旅行先'], 'direct_message,direct_mention,mention,ambient',
     function getPrefecture() {
         var http = require('http');
         var urlPrefecture = "http://geoapi.heartrails.com/api/json?method=getPrefectures";
-        http.get(urlPrefecture, function (res) {});
+        http.get(urlPrefecture, function (res) {
             res.setEncoding('utf8');
             var body = "";
             res.on('data', function(data) {
