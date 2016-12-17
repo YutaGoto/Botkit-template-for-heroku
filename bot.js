@@ -329,12 +329,15 @@ controller.hears(['(.+)でニコニコ検索'], 'direct_message,direct_mention,m
                         datas.forEach(function(val) {
                             nicoArray.push(val.title + " : http://nico.ms/" + val.contentId + " 再生数: " + val.viewCounter);
                         });
-                        console.log(nicoArray.join('\n'));
+                        convo.say(nicoArray.join('\n'));
+                        convo.next();
                     } else {
-                        console.log('みつかりませんでした。');
+                        convo.say('みつかりませんでした。');
+                        convo.next();
                     }
                 } else {
-                    console.log(m.meta.errorMessage);
+                    convo.say(m.meta.errorMessage);
+                    convo.next();
                 }
             });
         });
