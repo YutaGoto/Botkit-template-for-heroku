@@ -49,6 +49,7 @@ controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', func
     // bot.reply()で、botに発言をさせます。
     var notifyTalk = [
         '`iPhone10` とつぶやいたときの反応が変わりました。',
+        '`○○でお店を検索` と呼びかけると、○○のキーワードでホットペッパーグルメの検索をします。○○は半角スペースでAnd検索できます。',
         '`○○でニュース検索` と呼びかけると、ニコニコニュース検索します。○○は半角スペースでAnd検索できます。',
         '`○○でニコニコ検索` と呼びかけると、ニコニコ動画検索します。○○は半角スペースでAnd検索できます。'
     ];
@@ -70,7 +71,7 @@ controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', func
         '`おみくじ` と呼びかけると、その日のおみくじできます。',
         '`旅行先` と呼びかけると、おすすめの旅行先を教えてくれます。',
         '`○○って呼んで` と呼びかけると、○○にある文字列であなたの名前を忘れるまで覚えます。',
-        '`○○のお店を検索` と呼びかけると、○○のキーワードでホットペッパーグルメの検索をします。○○は半角スペースでAnd検索できます。',
+        '`○○でお店を検索` と呼びかけると、○○のキーワードでホットペッパーグルメの検索をします。○○は半角スペースでAnd検索できます。',
         '`○○でニュース検索` と呼びかけると、ニコニコニュース検索します。○○は半角スペースでAnd検索できます。',
         '`○○でニコニコ検索` と呼びかけると、ニコニコ動画検索します。○○は半角スペースでAnd検索できます。',
         '`○○って何` と呼びかけると、○○についてwikipedia検索します。'
@@ -337,7 +338,7 @@ controller.hears(['(.+)でニコニコ検索'], 'direct_message,direct_mention,m
     });
 });
 
-controller.hears(['(.+)のお店を検索'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
+controller.hears(['(.+)でお店を検索'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
     var http = require('http');
     var thing = message.match[1];
     var encodeWord = encodeURI(thing);
