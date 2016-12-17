@@ -48,10 +48,9 @@ controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', func
 
     // bot.reply()で、botに発言をさせます。
     var notifyTalk = [
-        '`旅行先` と呼びかけると、おすすめの旅行先を教えてくれます。',
-        '`○○って何` と呼びかけると、○○についてwikipedia検索します。',
-        '`○○のお店を検索` と呼びかけると、○○のキーワードでホットペッパーグルメの検索をします。○○は半角スペースでAnd検索できます。',
-        'ランダム返信がちょっとだけ賢くなりました。'
+        '`iPhone10` とつぶやいたときの反応が変わりました。',
+        '`○○でニュース検索` と呼びかけると、ニコニコニュース検索します。○○は半角スペースでAnd検索できます。',
+        '`○○でニコニコ検索` と呼びかけると、ニコニコ動画検索します。○○は半角スペースでAnd検索できます。'
     ];
     var joinNotifyTalk = notifyTalk.join("\n");
     bot.reply(message, joinNotifyTalk);
@@ -72,6 +71,8 @@ controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', func
         '`旅行先` と呼びかけると、おすすめの旅行先を教えてくれます。',
         '`○○って呼んで` と呼びかけると、○○にある文字列であなたの名前を忘れるまで覚えます。',
         '`○○のお店を検索` と呼びかけると、○○のキーワードでホットペッパーグルメの検索をします。○○は半角スペースでAnd検索できます。',
+        '`○○でニュース検索` と呼びかけると、ニコニコニュース検索します。○○は半角スペースでAnd検索できます。',
+        '`○○でニコニコ検索` と呼びかけると、ニコニコ動画検索します。○○は半角スペースでAnd検索できます。',
         '`○○って何` と呼びかけると、○○についてwikipedia検索します。'
     ];
     var joinFunctionTalk = functionTalk.join("\n");
@@ -108,51 +109,6 @@ controller.hears(['お御籤', '御御籤', 'お神籤', '御神籤', 'おみく
     var omikujiResult = omikujiArray[Math.floor(Math.random() * omikujiArray.length)];
 
     bot.reply(message, '*' + omikujiResult + '*');
-});
-
-
-controller.hears(['(.+)って呼んで'], 'direct_message,direct_mention,mention', function (bot, message) {
-
-    // 「◯◯って呼んで」の、◯◯の部分を取り出します。
-    // message.match[1] には、hearsの正規表現にマッチした単語が入っています。
-
-    var name_from_msg = message.match[1];
-
-
-    // まず、controller.storage.users.getで、ユーザーデータを取得します。
-
-    // message.userには、ユーザーIDが入っています。
-    // ユーザーデータは、ユーザーIDと紐付けていますので、第一引数には、必ずmessage.userを入れます。
-
-    controller.storage.users.get(message.user, function (err, user_info) {
-
-        // ▼ データ取得後の処理 ▼
-
-        // ユーザーデータが存在しているかどうか調べる
-        // ※第二引数で指定した変数(ここでは'user_info')に、ユーザーデータが入っています。
-        if (!user_info) {
-
-            // ▼ ユーザーデータがなかった場合の処理 ▼
-
-            // ユーザーidとユーザー名 のオブジェクトを、user_infoとして作成します。
-            user_info = {
-                id: message.user,
-                name: name_from_msg
-            };
-
-        }
-
-        // user_infoを保存します。
-        controller.storage.users.save(user_info, function (err, id) {
-
-            // ▼ 保存完了後の処理▼
-
-            bot.reply(message, 'あなたのお名前は *' + user_info.name + '* さんですね！忘れるまで覚えておきます！');
-
-        });
-
-    });
-
 });
 
 controller.hears(['こんにちは'], 'direct_message,direct_mention,mention', function (bot, message) {
@@ -307,13 +263,50 @@ controller.hears(['(.+)って何'], 'direct_message,direct_mention,mention', fun
     });
 });
 
+controller.hears(['(.+)でニュース検索'], 'direct_message,direct_mention,mention', function (bot, message) {
+    var thing = message.match[1];
+    var encodeThing = encodeURI(thing);
+    bot.reply(message, thing + "のニュースを探しています...");
+    bot.startConversation(message, function (err, convo) {
+        var http = require('http');
+        var url = "http://api.search.nicovideo.jp/api/v2/news/contents/search?targets=title,tags&fields=contentId,title,startTime&_context=rejobot&_limit=5&_sort=startTime&q=" + encodeThing;
+        http.get(url, function (result) {
+            var body = '';
+            result.setEncoding('utf8');
+            result.on('data', function(data) {
+                body += data;
+            });
+            result.on('end', function(data) {
+                var m = JSON.parse(body);
+                var nicoArray = [];
+                var datas = m.data;
+                if (datas) {
+                    if (datas.length > 0) {
+                        datas.forEach(function(val) {
+                            nicoArray.push(val.title + " : http://nico.ms/" + val.contentId + " 公開日: " + val.startTime);
+                        });
+                        convo.say(nicoArray.join('\n'));
+                        convo.next();
+                    } else {
+                        convo.say('みつかりませんでした。');
+                        convo.next();
+                    }
+                } else {
+                    convo.say(m.meta.errorMessage);
+                    convo.next();
+                }
+            });
+        });
+    });
+});
+
 controller.hears(['(.+)でニコニコ検索'], 'direct_message,direct_mention,mention', function (bot, message) {
     var thing = message.match[1];
     var encodeThing = encodeURI(thing);
-    bot.reply(message, thing + "を調べています...");
+    bot.reply(message, thing + "のニコニコ動画を探しています...");
     bot.startConversation(message, function (err, convo) {
         var http = require('http');
-        var url = "http://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search?targets=title,tags&fields=contentId,title,viewCounter&_context=slackbot&_limit=5&_sort=-viewCounter&q=" + encodeThing;
+        var url = "http://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search?targets=title,tags&fields=contentId,title,viewCounter&_context=slackbot&_limit=10&_sort=-viewCounter&q=" + encodeThing;
         http.get(url, function (result) {
             var body = '';
             result.setEncoding('utf8');
@@ -379,6 +372,50 @@ controller.hears(['(.+)のお店を検索'], 'direct_message,direct_mention,ment
             });
         });
     });
+});
+
+controller.hears(['(.+)って呼んで'], 'direct_message,direct_mention,mention', function (bot, message) {
+
+    // 「◯◯って呼んで」の、◯◯の部分を取り出します。
+    // message.match[1] には、hearsの正規表現にマッチした単語が入っています。
+
+    var name_from_msg = message.match[1];
+
+
+    // まず、controller.storage.users.getで、ユーザーデータを取得します。
+
+    // message.userには、ユーザーIDが入っています。
+    // ユーザーデータは、ユーザーIDと紐付けていますので、第一引数には、必ずmessage.userを入れます。
+
+    controller.storage.users.get(message.user, function (err, user_info) {
+
+        // ▼ データ取得後の処理 ▼
+
+        // ユーザーデータが存在しているかどうか調べる
+        // ※第二引数で指定した変数(ここでは'user_info')に、ユーザーデータが入っています。
+        if (!user_info) {
+
+            // ▼ ユーザーデータがなかった場合の処理 ▼
+
+            // ユーザーidとユーザー名 のオブジェクトを、user_infoとして作成します。
+            user_info = {
+                id: message.user,
+                name: name_from_msg
+            };
+
+        }
+
+        // user_infoを保存します。
+        controller.storage.users.save(user_info, function (err, id) {
+
+            // ▼ 保存完了後の処理▼
+
+            bot.reply(message, 'あなたのお名前は *' + user_info.name + '* さんですね！忘れるまで覚えておきます！');
+
+        });
+
+    });
+
 });
 
 controller.hears(['iPhone10'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
