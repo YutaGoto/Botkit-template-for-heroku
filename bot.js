@@ -269,7 +269,7 @@ controller.hears(['(.+)でニュース検索'], 'direct_message,direct_mention,m
     bot.reply(message, thing + "のニュースを探しています...");
     bot.startConversation(message, function (err, convo) {
         var http = require('http');
-        var url = "http://api.search.nicovideo.jp/api/v2/news/contents/search?targets=title,tags&fields=contentId,title,startTime&_context=rejobot&_limit=5&_sort=startTime&q=" + encodeThing;
+        var url = "http://api.search.nicovideo.jp/api/v2/news/contents/search?targets=title,tags&fields=contentId,title,startTime&_context=rejobot&_limit=10&_sort=startTime&q=" + encodeThing;
         http.get(url, function (result) {
             var body = '';
             result.setEncoding('utf8');
