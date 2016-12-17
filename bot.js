@@ -307,7 +307,7 @@ controller.hears(['(.+)って何'], 'direct_message,direct_mention,mention', fun
     });
 });
 
-controller.hears(['(.+)っでニコニコ検索'], 'direct_message,direct_mention,mention', function (bot, message) {
+controller.hears(['(.+)でニコニコ検索'], 'direct_message,direct_mention,mention', function (bot, message) {
     var thing = message.match[1];
     var encodeThing = encodeURI(thing);
     bot.reply(message, thing + "を調べています...");
@@ -322,6 +322,7 @@ controller.hears(['(.+)っでニコニコ検索'], 'direct_message,direct_mentio
             });
             result.on('end', function(data) {
                 var m = JSON.parse(body);
+                var nicoArray = [];
                 var datas = m.data;
                 if (datas) {
                     if (datas.length > 0) {
