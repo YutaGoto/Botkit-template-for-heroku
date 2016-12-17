@@ -284,7 +284,7 @@ controller.hears(['(.+)でニュース検索'], 'direct_message,direct_mention,m
                 if (datas) {
                     if (datas.length > 0) {
                         datas.forEach(function(val) {
-                            nicoArray.push(val.title + " : http://nico.ms/" + val.contentId + " 公開日: " + val.startTime);
+                            nicoArray.push(val.title + " : http://nico.ms/" + val.contentId + " 公開日: " + new Date(val.startTime).toLocaleDateString());
                         });
                         convo.say(nicoArray.join('\n'));
                         convo.next();
