@@ -240,70 +240,6 @@ controller.hears(['天気', 'てんき'], 'direct_message,direct_mention,mention
     });
 });
 
-controller.hears(['(.+)って何'], 'direct_message,direct_mention,mention', function (bot, message) {
-    var thing = message.match[1];
-    var encodeThing = encodeURI(thing);
-    bot.reply(message, thing + "を調べています...");
-    bot.startConversation(message, function (err, convo) {
-        var http = require('http');
-        http.get("http://wikipedia.simpleapi.net/api?output=json&keyword=" + encodeThing, function (result) {
-            var body = '';
-            result.setEncoding('utf8');
-            result.on('data', function(data) {
-                body += data;
-            });
-            result.on('end', function(data) {
-                var v = JSON.parse(body);
-                if (v === null) {
-                    convo.say(thing + 'が見つかりませんでした。');
-                    convo.next();
-                } else {
-                    convo.say(v[0].body);
-                    convo.next();
-                }
-            });
-        });
-    });
-});
-
-controller.hears(['(.+)のお店を検索'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
-    var http = require('http');
-    var thing = message.match[1];
-    var encodeWord = encodeURI(thing);
-    url = 'http://webservice.recruit.co.jp/hotpepper/shop/v1/?key=' + process.env.hotpepperKey +'&format=json&keyword=' + encodeWord;
-    bot.reply(message, thing + "でお店を調べています...");
-    bot.startConversation(message, function (err, convo) {
-        http.get(url, function (result) {
-            var body = '';
-            var shopArray = [];
-            var urlArray = [];
-            result.setEncoding('utf8');
-            result.on('data', function(data) {
-                body += data;
-            });
-            result.on('end', function(data) {
-                var v = JSON.parse(body);
-                var r = v.results;
-                if (r.shop) {
-                    if (r.shop.length > 0) {
-                        r.shop.forEach(function(val) {
-                            shopArray.push(val.name + ' : ' + val.urls.pc);
-                        });
-                        convo.say(shopArray.join('\n'));
-                        convo.next();
-                    } else {
-                        convo.say('ヒットしませんでした');
-                        convo.next();
-                    }
-                } else {
-                    convo.say('見つからないかヒット数が多すぎるのでキーワードを整理してください');
-                    convo.next();
-                }
-            });
-        });
-    });
-});
-
 controller.hears(['旅行先'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
     function getCity(prefecture) {
         var http = require('http');
@@ -345,59 +281,108 @@ controller.hears(['旅行先'], 'direct_message,direct_mention,mention,ambient',
     getPrefecture();
 });
 
+controller.hears(['(.+)って何'], 'direct_message,direct_mention,mention', function (bot, message) {
+    var thing = message.match[1];
+    var encodeThing = encodeURI(thing);
+    bot.reply(message, thing + "を調べています...");
+    bot.startConversation(message, function (err, convo) {
+        var http = require('http');
+        http.get("http://wikipedia.simpleapi.net/api?output=json&keyword=" + encodeThing, function (result) {
+            var body = '';
+            result.setEncoding('utf8');
+            result.on('data', function(data) {
+                body += data;
+            });
+            result.on('end', function(data) {
+                var v = JSON.parse(body);
+                if (v === null) {
+                    convo.say(thing + 'が見つかりませんでした。');
+                    convo.next();
+                } else {
+                    convo.say(v[0].body);
+                    convo.next();
+                }
+            });
+        });
+    });
+});
+
+controller.hears(['(.+)っでニコニコ検索'], 'direct_message,direct_mention,mention', function (bot, message) {
+    var thing = message.match[1];
+    var encodeThing = encodeURI(thing);
+    bot.reply(message, thing + "を調べています...");
+    bot.startConversation(message, function (err, convo) {
+        var http = require('http');
+        var url = "http://api.search.nicovideo.jp/api/v2/snapshot/video/contents/search?targets=title,tags&fields=contentId,title,viewCounter&_context=slackbot&_limit=5&_sort=-viewCounter&q=" + encodeThing;
+        http.get(url, function (result) {
+            var body = '';
+            result.setEncoding('utf8');
+            result.on('data', function(data) {
+                body += data;
+            });
+            result.on('end', function(data) {
+                var m = JSON.parse(body);
+                var datas = m.data;
+                if (datas) {
+                    if (datas.length > 0) {
+                        datas.forEach(function(val) {
+                            nicoArray.push(val.title + " : http://nico.ms/" + val.contentId + " 再生数: " + val.viewCounter);
+                        });
+                        console.log(nicoArray.join('\n'));
+                    } else {
+                        console.log('みつかりませんでした。');
+                    }
+                } else {
+                    console.log(m.meta.errorMessage);
+                }
+            });
+        });
+    });
+});
+
+controller.hears(['(.+)のお店を検索'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
+    var http = require('http');
+    var thing = message.match[1];
+    var encodeWord = encodeURI(thing);
+    url = 'http://webservice.recruit.co.jp/hotpepper/shop/v1/?key=' + process.env.hotpepperKey +'&format=json&keyword=' + encodeWord;
+    bot.reply(message, thing + "でお店を調べています...");
+    bot.startConversation(message, function (err, convo) {
+        http.get(url, function (result) {
+            var body = '';
+            var shopArray = [];
+            result.setEncoding('utf8');
+            result.on('data', function(data) {
+                body += data;
+            });
+            result.on('end', function(data) {
+                var v = JSON.parse(body);
+                var r = v.results;
+                if (r.shop) {
+                    if (r.shop.length > 0) {
+                        r.shop.forEach(function(val) {
+                            shopArray.push(val.name + ' : ' + val.urls.pc);
+                        });
+                        convo.say(shopArray.join('\n'));
+                        convo.next();
+                    } else {
+                        convo.say('ヒットしませんでした');
+                        convo.next();
+                    }
+                } else {
+                    convo.say('見つからないかヒット数が多すぎるのでキーワードを整理してください');
+                    convo.next();
+                }
+            });
+        });
+    });
+});
+
 controller.hears(['iPhone10'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
 
     bot.reply(message, "iPhone10!!!");
     var https = require('https');
     var url = "https://slack.com/api/chat.postMessage?token=" + process.env.token + "&channel=%23" + process.env.botChannel + "&text=%3Alongiphone1%3A%0A%3Alongiphone2%3A%0A%3Alongiphone3%3A%0A%3Alongiphone4%3A&username=iphone10&icon_emoji=%3Alongiphone1%3A%3Alongiphone2%3A%3Alongiphone3%3A%3Alongiphone4%3A&pretty=1"
     https.get(url);
-
-});
-
-//=========================================================
-// 質問形式の会話
-//=========================================================
-
-controller.hears(['ラーメン'], 'direct_message,direct_mention,mention', function (bot, message) {
-
-    bot.reply(message, ':ramen:いいですよね:grin:');
-
-    // 会話を開始します。
-    bot.startConversation(message, function (err, convo) {
-
-        // convo.ask() で質問をします。
-        convo.ask('私が何味が好きか当ててみてください！', [
-            {
-                pattern: '醤油', // マッチさせる単語
-                callback: function (response, convo) {
-
-                    // ▼ マッチした時の処理 ▼
-
-                    convo.say('正解！:ok_woman:\n醤油！これぞ王道！:+1:'); // convo.say()で発言をします。
-                    convo.next(); // convo.next()で、会話を次に進めます。通常は、会話が終了します。
-                }
-            },
-            {
-                pattern: '味噌',
-                callback: function (response, convo) {
-                    convo.say('正解！:ok_woman:\n寒いと味噌たべたくなります！:+1:');
-                    convo.next();
-                }
-            },
-            {
-                default: true,
-                callback: function (response, convo) {
-
-                    // ▼ どのパターンにもマッチしない時の処理 ▼
-
-                    convo.say('うーん、おしいです！:no_good:');
-                    convo.repeat(); // convo.repeat()で、質問を繰り返します。
-                    convo.next(); // 会話を次に進めます。この場合、最初の質問にも戻ります。
-                }
-            }
-        ]);
-
-    })
 
 });
 
