@@ -264,7 +264,7 @@ controller.hears(['(.+)って何'], 'direct_message,direct_mention,mention', fun
     });
 });
 
-controller.hears(['(.+)でニュース検索'], 'direct_message,direct_mention,mention', function (bot, message) {
+controller.hears(['(.+)でニュース検索'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
     var thing = message.match[1];
     var encodeThing = encodeURI(thing);
     bot.reply(message, thing + "のニュースを探しています...");
@@ -301,7 +301,7 @@ controller.hears(['(.+)でニュース検索'], 'direct_message,direct_mention,m
     });
 });
 
-controller.hears(['(.+)でニコニコ検索'], 'direct_message,direct_mention,mention', function (bot, message) {
+controller.hears(['(.+)でニコニコ検索'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
     var thing = message.match[1];
     var encodeThing = encodeURI(thing);
     bot.reply(message, thing + "のニコニコ動画を探しています...");
