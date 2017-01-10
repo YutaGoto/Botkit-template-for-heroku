@@ -48,10 +48,7 @@ controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', func
 
     // bot.reply()で、botに発言をさせます。
     var notifyTalk = [
-        '`iPhone10` とつぶやいたときの反応が変わりました。',
-        '`○○でお店を検索` と呼びかけると、○○のキーワードでホットペッパーグルメの検索をします。○○は半角スペースでAnd検索できます。',
-        '`○○でニュース検索` と呼びかけると、ニコニコニュース検索します。○○は半角スペースでAnd検索できます。',
-        '`○○でニコニコ検索` と呼びかけると、ニコニコ動画検索します。○○は半角スペースでAnd検索できます。'
+        'わりと頭のいい返事をするBotが登場しました。 `@zatsudan_kun` に向かって話しかけてみてください。'
     ];
     var joinNotifyTalk = notifyTalk.join("\n");
     bot.reply(message, joinNotifyTalk);
@@ -74,7 +71,8 @@ controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', func
         '`○○でお店を検索` と呼びかけると、○○のキーワードでホットペッパーグルメの検索をします。○○は半角スペースでAnd検索できます。',
         '`○○でニュース検索` と呼びかけると、ニコニコニュース検索します。○○は半角スペースでAnd検索できます。',
         '`○○でニコニコ検索` と呼びかけると、ニコニコ動画検索します。○○は半角スペースでAnd検索できます。',
-        '`○○って何` と呼びかけると、○○についてwikipedia検索します。'
+        '`○○って何` と呼びかけると、○○についてwikipedia検索します。',
+        'わりと頭のいい返事をするBotが登場しました。 `@zatsudan_kun` に向かって話しかけてみてください。'
     ];
     var joinFunctionTalk = functionTalk.join("\n");
     bot.reply(message, joinFunctionTalk);
