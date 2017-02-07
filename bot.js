@@ -79,6 +79,28 @@ controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', func
 
 });
 
+controller.hears(['nomu (.*)'], 'direct_message,ambient', function (bot, message) {
+    var matches = message.text.match(/nomu ?(.*)/i);
+    var words = matches[1];
+    var client = require('cheerio-httpcli');
+
+    client.setBrowser('chrome'); 
+    client.fetch('http://racing-lagoon.info/nomu/translate.php').then(function (result) {
+        var form = result.$('form[name=form]');
+
+        form.field({
+            before: words,
+            level: 4,
+            options: 'nochk'
+        });
+
+        form.find('input[type=submit]').click(function (err, $, res, body) {
+            var m = $('textarea[name=after1]').val();
+            bot.reply(message, m);
+        });
+    })
+});
+
 //=========================================================
 // 名前を覚える(データを保存する)
 //=========================================================
@@ -573,28 +595,6 @@ controller.hears(['なす', 'ナス', '茄子', 'なすび'], 'direct_message,di
 // controller.hears()には優先順位があり、上のものから優先にマッチします。
 // すべてにマッチするhears()を、一番最後に記述すれば、
 // 「当てはまらなかった場合の返答」を作成できます。
-
-controller.hears(['nomu (.*)'], 'direct_message,ambient', function (bot, message) {
-    var matches = message.text.match(/nomu ?(.*)/i);
-    var words = matches[1];
-    var client = require('cheerio-httpcli');
-
-    client.setBrowser('chrome'); 
-    client.fetch('http://racing-lagoon.info/nomu/translate.php').then(function (result) {
-        var form = result.$('form[name=form]');
-
-        form.field({
-            before: words,
-            level: 4,
-            options: 'nochk'
-        });
-
-        form.find('input[type=submit]').click(function (err, $, res, body) {
-            var m = $('textarea[name=after1]').val();
-            bot.reply(message, m);
-        });
-    })
-});
 
 controller.hears(['(.*)'], 'direct_message,direct_mention,mention', function (bot, message) {
     var thing = message.match[1];
