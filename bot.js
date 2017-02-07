@@ -576,6 +576,7 @@ controller.hears(['なす', 'ナス', '茄子', 'なすび'], 'direct_message,di
 
 controller.hears(['nomu (.*)'], 'direct_message,ambient', function (bot, message) {
     var words = message.match[1];
+    console.log(words);
     var client = require('cheerio-httpcli');
 
     client.setBrowser('chrome'); 
@@ -589,7 +590,8 @@ controller.hears(['nomu (.*)'], 'direct_message,ambient', function (bot, message
         });
 
         form.find('input[type=submit]').click(function (err, $, res, body) {
-            bot.reply(message, $('textarea[name=after1]').val());
+            var m = $('textarea[name=after1]').val();
+            bot.reply(message, m);
         });
     })
 });
