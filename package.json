@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "dependencies": {
     "botkit": "^0.4.0",
-    "botkit-middleware-watson": "^1.0.0"
+    "botkit-middleware-watson": "^1.0.0",
+    "cheerio": "^0.22.0",
+    "cheerio-httpcli": "^0.6.11",
+    "querystring": "^0.2.0",
+    "request": "^2.79.0"
   }
 }

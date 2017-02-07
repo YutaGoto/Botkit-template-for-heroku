@@ -574,6 +574,26 @@ controller.hears(['なす', 'ナス', '茄子', 'なすび'], 'direct_message,di
 // すべてにマッチするhears()を、一番最後に記述すれば、
 // 「当てはまらなかった場合の返答」を作成できます。
 
+controller.hears(['nomu (.*)'], 'direct_message,ambient', function (bot, message) {
+    var words = message.match[1];
+    var client = require('cheerio-httpcli');
+
+    client.setBrowser('chrome'); 
+    client.fetch('http://racing-lagoon.info/nomu/translate.php').then(function (result) {
+        var form = result.$('form[name=form]');
+
+        form.field({
+            before: words,
+            level: 4,
+            options: 'nochk'
+        });
+
+        form.find('input[type=submit]').click(function (err, $, res, body) {
+            bot.reply(message, $('textarea[name=after1]').val());
+        });
+    })
+});
+
 controller.hears(['(.*)'], 'direct_message,direct_mention,mention', function (bot, message) {
     var thing = message.match[1];
     var encodeThing = encodeURI(thing);
