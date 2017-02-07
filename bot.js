@@ -575,6 +575,7 @@ controller.hears(['なす', 'ナス', '茄子', 'なすび'], 'direct_message,di
 // 「当てはまらなかった場合の返答」を作成できます。
 
 controller.hears(['nomu (.*)'], 'direct_message,ambient', function (bot, message) {
+    console.log(message.match[2]);
     var words = message.match[1];
     console.log(words);
     var client = require('cheerio-httpcli');
