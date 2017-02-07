@@ -576,6 +576,7 @@ controller.hears(['なす', 'ナス', '茄子', 'なすび'], 'direct_message,di
 
 controller.hears(['nomu (.*)'], 'direct_message,ambient', function (bot, message) {
     var words = message.match[2];
+    console.log(words);
     var client = require('cheerio-httpcli');
 
     client.setBrowser('chrome'); 
