@@ -554,7 +554,7 @@ controller.hears(['じゃんけん'], 'direct_message,direct_mention,mention', f
 // 絵文字リアクション
 //=========================================================
 
-controller.hears(['ハイタッチ'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
+controller.hears(['ハイタッチ'], 'direct_message,direct_mention,mention', function (bot, message) {
 
     bot.reply(message, 'ハイタッチ！');
 
@@ -571,7 +571,7 @@ controller.hears(['ハイタッチ'], 'direct_message,direct_mention,mention,amb
 
 });
 
-controller.hears(['なす', 'ナス', '茄子', 'なすび'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
+controller.hears(['なす', 'ナス', '茄子', 'なすび'], 'direct_message,direct_mention,mention', function (bot, message) {
 
     bot.reply(message, ':oguri:');
 
