@@ -84,7 +84,7 @@ controller.hears(['nomu (.*)'], 'direct_message,ambient', function (bot, message
     var words = matches[1];
     var client = require('cheerio-httpcli');
 
-    client.setBrowser('chrome'); 
+    client.setBrowser('chrome');
     client.fetch('http://racing-lagoon.info/nomu/translate.php').then(function (result) {
         var form = result.$('form[name=form]');
 
@@ -99,6 +99,23 @@ controller.hears(['nomu (.*)'], 'direct_message,ambient', function (bot, message
             bot.reply(message, m);
         });
     })
+});
+
+controller.hears(['excite (.*)'], 'direct_message,ambient', function (bot, message) {
+    var matches = message.text.match(/excite ?(.*)/i);
+    var words = matches[1];
+    var client = require('cheerio-httpcli');
+
+    client.fetch('http://www.excite.co.jp/world/').then(function (result) {
+        return result.$('#formTrans').submit({
+            auto_detect: 'on',
+            before: words,
+            reverse_option: true
+        });
+    })
+    .then(function (result) {
+        bot.reply(message, result.$('#reverse').val());
+    });
 });
 
 //=========================================================
