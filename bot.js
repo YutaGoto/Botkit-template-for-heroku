@@ -120,6 +120,23 @@ controller.hears(['excite (.*)'], 'direct_message,ambient', function (bot, messa
     });
 });
 
+controller.hears(['translate (.*)'], 'direct_message,ambient', function (bot, message) {
+    var matches = message.text.match(/translate ?(.*)/i);
+    var words = matches[1];
+    var client = require('cheerio-httpcli');
+
+    client.fetch('http://www.excite.co.jp/world/').then(function (result) {
+        return result.$('#formTrans').submit({
+            auto_detect: 'on',
+            before: words
+        });
+    })
+    .then(function (result) {
+        bot.reply(message, result.$('#after').val());
+    });
+});
+
+
 //=========================================================
 // 名前を覚える(データを保存する)
 //=========================================================
