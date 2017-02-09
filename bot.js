@@ -50,7 +50,7 @@ controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', func
     var notifyTalk = [
         '`nomu ○○` とつぶやくと、ファイナルファンタジー風に翻訳してくれます。',
         '`:excite: ○○` とつぶやくと、excite再翻訳してくれます。',
-        '`translate ○○` とつぶやくと、excite翻訳してくれます。'
+        '`:translate: ○○` とつぶやくと、excite翻訳してくれます。'
     ];
     var joinNotifyTalk = notifyTalk.join("\n");
     bot.reply(message, joinNotifyTalk);
@@ -75,7 +75,7 @@ controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', func
         '`○○って何` と呼びかけると、○○についてwikipedia検索します。',
         '`nomu ○○` とつぶやくと、ファイナルファンタジー風に翻訳してくれます。',
         '`:excite: ○○` とつぶやくと、excite再翻訳してくれます。',
-        '`translate ○○` とつぶやくと、excite翻訳してくれます。'
+        '`:translate: ○○` とつぶやくと、excite翻訳してくれます。'
     ];
     var joinFunctionTalk = functionTalk.join("\n");
     bot.reply(message, joinFunctionTalk);
@@ -121,8 +121,8 @@ controller.hears([':excite: (.*)'], 'direct_message,ambient', function (bot, mes
     });
 });
 
-controller.hears(['translate (.*)'], 'direct_message,ambient', function (bot, message) {
-    var matches = message.text.match(/translate ?(.*)/i);
+controller.hears([':translate: (.*)'], 'direct_message,ambient', function (bot, message) {
+    var matches = message.text.match(/:translate: ?(.*)/i);
     var words = matches[1];
     var client = require('cheerio-httpcli');
 
