@@ -105,7 +105,7 @@ controller.hears(['nomu (.*)'], 'direct_message,ambient', function (bot, message
 });
 
 controller.hears([':excite: (.*)'], 'direct_message,ambient', function (bot, message) {
-    var matches = message.text.match(/excite ?(.*)/i);
+    var matches = message.text.match(/:excite: ?(.*)/i);
     var words = matches[1];
     var client = require('cheerio-httpcli');
 
