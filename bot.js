@@ -49,7 +49,7 @@ controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', func
     // bot.reply()で、botに発言をさせます。
     var notifyTalk = [
         '`nomu ○○` とつぶやくと、ファイナルファンタジー風に翻訳してくれます。',
-        '`excite ○○` とつぶやくと、excite再翻訳してくれます。',
+        '`:excite: ○○` とつぶやくと、excite再翻訳してくれます。',
         '`translate ○○` とつぶやくと、excite翻訳してくれます。'
     ];
     var joinNotifyTalk = notifyTalk.join("\n");
