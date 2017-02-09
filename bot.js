@@ -64,7 +64,6 @@ controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', func
         '`じゃんけん` と呼びかけると、じゃんけんをすることができます。',
         '`詳しい天気` と呼びかけると、今の詳しい天気予報をお知らせします。',
         '`天気` と呼びかけると、18時以前は今日の・18時以降は明日の天気予報をお知らせします。',
-        '`昼ごはん` と呼びかけると、昼ごはんにおすすめの場所をお知らせします。',
         '`なす` とつぶやくと、なすの反応が来ます。',
         '`iPhone10` とつぶやくと、iPhone10っぽい反応をします。',
         '`おみくじ` と呼びかけると、その日のおみくじできます。',
@@ -197,14 +196,6 @@ controller.hears(['おはよう'], 'direct_message,direct_mention,mention', func
     ];
     var selectMorningTalk = morningTalk[Math.floor(Math.random() * morningTalk.length)];
     bot.reply(message, selectMorningTalk);
-
-});
-
-controller.hears(['昼ごはん', 'おなかすいた', 'お腹すいた'], 'direct_message,direct_mention,mention', function (bot, message) {
-
-    var lunch = ['中華', 'そば', 'にいむら', 'オリジンキッチン', 'もちもち', '丸亀製麺', '裏の中華', 'インドカレー', 'ココイチ', '代々木ビレッジ', 'カレーメシ', 'おにぎり', 'もやし炒め', 'ケナリ', '信長', 'バリスタ', 'トルコ', '冷やし中華', 'ビール', '食べない'];
-    var lunch_talk = lunch[Math.floor(Math.random() * lunch.length)];
-    bot.reply(message, lunch_talk);
 
 });
 
