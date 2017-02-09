@@ -74,7 +74,7 @@ controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', func
         '`○○でニコニコ検索` と呼びかけると、ニコニコ動画検索します。○○は半角スペースでAnd検索できます。',
         '`○○って何` と呼びかけると、○○についてwikipedia検索します。',
         '`nomu ○○` とつぶやくと、ファイナルファンタジー風に翻訳してくれます。',
-        '`excite ○○` とつぶやくと、excite再翻訳してくれます。',
+        '`:excite: ○○` とつぶやくと、excite再翻訳してくれます。',
         '`translate ○○` とつぶやくと、excite翻訳してくれます。'
     ];
     var joinFunctionTalk = functionTalk.join("\n");
@@ -104,7 +104,7 @@ controller.hears(['nomu (.*)'], 'direct_message,ambient', function (bot, message
     })
 });
 
-controller.hears(['excite (.*)'], 'direct_message,ambient', function (bot, message) {
+controller.hears([':excite: (.*)'], 'direct_message,ambient', function (bot, message) {
     var matches = message.text.match(/excite ?(.*)/i);
     var words = matches[1];
     var client = require('cheerio-httpcli');
