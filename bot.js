@@ -137,6 +137,39 @@ controller.hears([':translate: (.*)'], 'direct_message,ambient', function (bot, 
     });
 });
 
+controller.hears(['チョコください', 'チョコ下さい'], 'direct_message,direct_mention,mention', function (bot, message) {
+
+    var chocoTalks = [
+        'つ:chocolate_bar:',
+        'つ:oguri:',
+        'つ:chocolate_bar:',
+        'つ:chocolate_bar:',
+        'つ:fish_cake:',
+        'つ:construction_worker:',
+        'つ:lollipop:',
+        'つ:chocolate_bar:',
+        'つ:chocolate_bar:',
+        ':munenn:',
+        'つ:chocolate_bar:',
+        'つ:ramen:',
+    ];
+    var selectChocoTalk = chocoTalks[Math.floor(Math.random() * helloTalk.length)];
+
+    bot.reply(message, selectChocoTalk);
+
+    // 絵文字リアクションを追加
+    bot.api.reactions.add({
+        timestamp: message.ts,
+        channel: message.channel,
+        name: 'chocolate_bar',
+    }, function (err, res) {
+        if (err) {
+            bot.botkit.log('Failed to add emoji reaction :(', err);
+        }
+    });
+
+});
+
 
 //=========================================================
 // 名前を覚える(データを保存する)
