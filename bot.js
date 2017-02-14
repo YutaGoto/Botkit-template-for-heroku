@@ -153,7 +153,7 @@ controller.hears(['チョコください', 'チョコ下さい'], 'direct_messag
         'つ:chocolate_bar:',
         'つ:ramen:'
     ];
-    var selectChocoTalk = chocoTalks[Math.floor(Math.random() * helloTalk.length)];
+    var selectChocoTalk = chocoTalks[Math.floor(Math.random() * chocoTalks.length)];
 
     bot.reply(message, selectChocoTalk);
 
