@@ -239,8 +239,13 @@ controller.hears(['天気', 'てんき'], 'direct_message,direct_mention,mention
                 } else {
                     var weather = v.forecasts[1];
                 }
-                convo.say(weather.dateLabel + "の" + v.title + "は" + weather.telop + "です。最高気温は" + weather.temperature.max.celsius + "度です！");
-                convo.next();
+                try {
+                    convo.say(weather.dateLabel + "の" + v.title + "は" + weather.telop + "です。最高気温は" + weather.temperature.max.celsius + "度です！");
+                    convo.next();
+                } catch (e) {
+                    convo.say("エラーだよ！");
+                    convo.next();
+                }
             });
         });
     });
