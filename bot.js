@@ -232,9 +232,12 @@ controller.hears(['宮古島の天気', ''], 'direct_message,direct_mention,ment
             });
             result.on('end', function(data) {
                 var v = JSON.parse(body);
-                var weather = v.forecasts[0];
+                var weather = v.forecasts;
                 try {
-                    convo.say("宮古島の" + weather.dateLabel + "の" + v.title + "は" + weather.telop + "です。最高気温は" + weather.temperature.max.celsius + "度です！");
+                    var weatherText = weather[0].dateLabel + "の" + v.title + "は" + weather[0].telop + "です\n";
+                    weatherText = weatherText + weather[1].dateLabel + "の" + v.title + "は" + weather[1].telop + "です\n";
+                    weatherText = weatherText + weather[2].dateLabel + "の" + v.title + "は" + weather[2].telop + "です\n";
+                    convo.say(weatherText);
                     convo.next();
                 } catch (e) {
                     convo.say("エラーだよ！");
