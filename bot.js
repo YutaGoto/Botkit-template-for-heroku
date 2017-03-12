@@ -219,7 +219,7 @@ controller.hears(['くわしい天気', '詳しい天気'], 'direct_message,dire
     });
 });
 
-controller.hears(['宮古島の天気', ''], 'direct_message,direct_mention,mention', function (bot, message) {
+controller.hears(['宮古島の天気'], 'direct_message,direct_mention,mention', function (bot, message) {
     bot.reply(message, "宮古島の天気情報を取得しています...");
     bot.startConversation(message, function (err, convo) {
         var http = require('http');
