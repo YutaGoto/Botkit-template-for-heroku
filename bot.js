@@ -219,6 +219,32 @@ controller.hears(['くわしい天気', '詳しい天気'], 'direct_message,dire
     });
 });
 
+controller.hears(['宮古島の天気', ''], 'direct_message,direct_mention,mention', function (bot, message) {
+    bot.reply(message, "宮古島の天気情報を取得しています...");
+    bot.startConversation(message, function (err, convo) {
+        var http = require('http');
+        http.get("http://weather.livedoor.com/forecast/webservice/json/v1?city=473000", function (result) {
+            var time = new Date();
+            var body = '';
+            result.setEncoding('utf8');
+            result.on('data', function(data) {
+                body += data;
+            });
+            result.on('end', function(data) {
+                var v = JSON.parse(body);
+                var weather = v.forecasts[0];
+                try {
+                    convo.say("宮古島の" + weather.dateLabel + "の" + v.title + "は" + weather.telop + "です。最高気温は" + weather.temperature.max.celsius + "度です！");
+                    convo.next();
+                } catch (e) {
+                    convo.say("エラーだよ！");
+                    convo.next();
+                }
+            });
+        });
+    });
+});
+
 controller.hears(['天気', 'てんき'], 'direct_message,direct_mention,mention', function (bot, message) {
     bot.reply(message, "天気情報を取得しています...");
     bot.startConversation(message, function (err, convo) {
