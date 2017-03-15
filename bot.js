@@ -48,9 +48,7 @@ controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', func
 
     // bot.reply()で、botに発言をさせます。
     var notifyTalk = [
-        '`nomu ○○` とつぶやくと、ファイナルファンタジー風に翻訳してくれます。',
-        '`:excite: ○○` とつぶやくと、excite再翻訳してくれます。',
-        '`:translate: ○○` とつぶやくと、excite翻訳してくれます。'
+        '`biz ○○` とつぶやくと、ファイナルファンタジー風に翻訳してくれます。'
     ];
     var joinNotifyTalk = notifyTalk.join("\n");
     bot.reply(message, joinNotifyTalk);
@@ -99,6 +97,27 @@ controller.hears(['nomu (.*)'], 'direct_message,ambient', function (bot, message
 
         form.find('input[type=submit]').click(function (err, $, res, body) {
             var m = $('textarea[name=after1]').val();
+            bot.reply(message, m);
+        });
+    })
+});
+
+controller.hears(['biz (.*)'], 'direct_message,ambient', function (bot, message) {
+    var matches = message.text.match(/biz ?(.*)/i);
+    var words = matches[1];
+    var client = require('cheerio-httpcli');
+
+    client.setBrowser('chrome');
+    client.fetch('https://bizwd.net/').then(function (result) {
+        var form = result.$('form[name=form]');
+
+        form.field({
+            before: words,
+            level: 2
+        });
+
+        form.find('input[type=submit]').click(function (err, $, res, body) {
+            var m = $('textarea[name=after]').val();
             bot.reply(message, m);
         });
     })
