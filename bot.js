@@ -109,7 +109,7 @@ controller.hears(['biz (.*)'], 'direct_message,ambient', function (bot, message)
 
     client.setBrowser('chrome');
     client.fetch('https://bizwd.net/').then(function (result) {
-        var form = result.$('form[name=form]');
+        var form = result.$('form[name=form1]');
 
         form.field({
             before: words,
@@ -120,7 +120,7 @@ controller.hears(['biz (.*)'], 'direct_message,ambient', function (bot, message)
             var m = $('textarea[name=after]').val();
             bot.reply(message, m);
         });
-    })
+    });
 });
 
 controller.hears([':excite: (.*)'], 'direct_message,ambient', function (bot, message) {
