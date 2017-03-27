@@ -526,9 +526,10 @@ controller.hears([':anzu_futaba:'], 'direct_message,direct_mention,ambient', fun
     ];
 
     var anzuMessage = anzuMessages[Math.floor(Math.random() * anzuMessages.length)];
+    var encodeMessage = encodeURI(anzuMessage);
 
     var https = require('https');
-    var url = "https://slack.com/api/chat.postMessage?token=" + process.env.token + "&channel=%23" + process.env.botChannel + "&text=" + anzuMessage + "&username=双葉杏&icon_emoji=%3Aanzu_futaba%3A&pretty=1";
+    var url = "https://slack.com/api/chat.postMessage?token=" + process.env.token + "&channel=%23" + process.env.botChannel + "&text=" + encodeMessage + "&username=双葉杏&icon_emoji=%3Aanzu_futaba%3A&pretty=1";
     https.get(url);
 
 });
