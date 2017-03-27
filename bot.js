@@ -239,35 +239,6 @@ controller.hears(['くわしい天気', '詳しい天気'], 'direct_message,dire
     });
 });
 
-controller.hears(['宮古島の天気'], 'direct_message,direct_mention,mention', function (bot, message) {
-    bot.reply(message, "宮古島の天気情報を取得しています...");
-    bot.startConversation(message, function (err, convo) {
-        var http = require('http');
-        http.get("http://weather.livedoor.com/forecast/webservice/json/v1?city=473000", function (result) {
-            var time = new Date();
-            var body = '';
-            result.setEncoding('utf8');
-            result.on('data', function(data) {
-                body += data;
-            });
-            result.on('end', function(data) {
-                var v = JSON.parse(body);
-                var weather = v.forecasts;
-                try {
-                    var weatherText = weather[0].dateLabel + "の" + v.title + "は" + weather[0].telop + "です\n";
-                    weatherText = weatherText + weather[1].dateLabel + "の" + v.title + "は" + weather[1].telop + "です\n";
-                    weatherText = weatherText + weather[2].dateLabel + "の" + v.title + "は" + weather[2].telop + "です\n";
-                    convo.say(weatherText);
-                    convo.next();
-                } catch (e) {
-                    convo.say("エラーだよ！");
-                    convo.next();
-                }
-            });
-        });
-    });
-});
-
 controller.hears(['天気', 'てんき'], 'direct_message,direct_mention,mention', function (bot, message) {
     bot.reply(message, "天気情報を取得しています...");
     bot.startConversation(message, function (err, convo) {
@@ -519,6 +490,46 @@ controller.hears(['(.+)って呼んで'], 'direct_message,direct_mention,mention
         });
 
     });
+
+});
+
+controller.hears([':anzu_futaba:'], 'direct_message,direct_mention,ambient', function (bot, message) {
+
+    anzuMessages = [
+        "い、いやだっ！ 私は働かないぞっ！ アイドルだろうとなんだろうと…お断りだーっ！！ ……え？ アイドルになれば印税で一生楽に生きていける？ ほ、本当？ …は、話を聞かせてもらおうじゃないか",
+        "えっ！？ 飴くれるの？ ありがと～っ！ プロデューサー！！",
+        "プロデューサー。今朝占いで「アイドルのプロデューサーさんは担当アイドルを甘やかすと吉」って言ってたよ～！",
+        "負けてもいいから帰りたい",
+        "(……帰って寝たい)",
+        "次の休みは今日ですか～？",
+        "果報は寝て待てって名言だよね",
+        "プロデューサー、休養も大事な仕事だよっ！！",
+        "プロデューサー。杏、週休8日を希望しま～す",
+        "……も､もう帰りたい",
+        "はぁはぁはぁはぁ…",
+        "人生で一番頑張った気がする",
+        "プロデューサー、無理せず少し休んだら？ うん､絶対それがいいよっ!",
+        "プロデューサー。今日は雨が降るらしいから帰ろうっ！！",
+        "最近､ﾌﾟﾛﾃﾞｭｰｻｰ頑張りすぎじゃない?私､なんだか心配だよ。杏のことは気にしなくていいから､今週は仕事をお休みにしよう?うんうん､それがいいと思うよ",
+        "えっ!?明日は休み?ありがと～っ!ﾌﾟﾛﾃﾞｭｰｻｰ!!",
+        "ﾌﾟﾛﾃﾞｭｰｻｰ｡明日から頑張ることにして､今日は気分転換にｳﾁでｹﾞｰﾑすることにしようよ",
+        "勝負はまた今度にしない?",
+        "ﾌﾟﾛﾃﾞｭｰｻｰ…杏､今日は何やらされるんですか?",
+        "(……帰って寝たい)",
+        "次の休みは今日ですか～?",
+        "ｴﾋﾞで鯛を釣るって名言だよね!",
+        "ﾌﾟﾛﾃﾞｭ-ｻ-、無理は厳禁だよ。さぁ休憩しようっ！",
+        "……も､もう帰りたい",
+        "はぁはぁはぁはぁ…",
+        "ｽﾀﾐﾅがなくなりました。3日くらいで1回復します……多分",
+        "ﾌﾟﾛﾃﾞｭｰｻｰ､続きは明日にしようっ!!"
+    ];
+
+    var anzuMessage = anzuMessages[Math.floor(Math.random() * anzuMessages.length)];
+
+    var https = require('https');
+    var url = "https://slack.com/api/chat.postMessage?token=" + process.env.token + "&channel=%23" + process.env.botChannel + "&text=" + anzuMessage + "&username=双葉杏&icon_emoji=anzu_futaba&pretty=1";
+    https.get(url);
 
 });
 
