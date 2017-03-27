@@ -493,7 +493,7 @@ controller.hears(['(.+)って呼んで'], 'direct_message,direct_mention,mention
 
 });
 
-controller.hears([':anzu_futaba:'], 'direct_message,direct_mention,ambient', function (bot, message) {
+controller.hears([':anzu_futaba:'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
 
     anzuMessages = [
         "い、いやだっ！ 私は働かないぞっ！ アイドルだろうとなんだろうと…お断りだーっ！！ ……え？ アイドルになれば印税で一生楽に生きていける？ ほ、本当？ …は、話を聞かせてもらおうじゃないか",
@@ -527,9 +527,10 @@ controller.hears([':anzu_futaba:'], 'direct_message,direct_mention,ambient', fun
 
     var anzuMessage = anzuMessages[Math.floor(Math.random() * anzuMessages.length)];
     var encodeMessage = encodeURI(anzuMessage);
+    var encodeName = encodeURI("双葉杏");
 
     var https = require('https');
-    var url = "https://slack.com/api/chat.postMessage?token=" + process.env.token + "&channel=%23" + process.env.botChannel + "&text=" + encodeMessage + "&username=双葉杏&icon_emoji=%3Aanzu_futaba%3A&pretty=1";
+    var url = "https://slack.com/api/chat.postMessage?token=" + process.env.token + "&channel=%23" + process.env.botChannel + "&text=" + encodeMessage + "&username=" + encodeName + "&icon_emoji=%3Aanzu_futaba%3A&pretty=1";
     https.get(url);
 
 });
