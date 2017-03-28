@@ -496,52 +496,46 @@ controller.hears(['(.+)って呼んで'], 'direct_message,direct_mention,mention
 
 controller.hears([':anzu_futaba:'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
 
-    function getUserName() {
-        bot.api.users.info({user: message.user}, function (err, info) {
-            return info.user.name;
-        });
-    }
+    bot.api.users.info({user: message.user}, function (err, info) {
+        var userName =  info.user.name;
+        anzuMessages = [
+            "い、いやだっ！ 私は働かないぞっ！ アイドルだろうとなんだろうと…お断りだーっ！！ ……え？ アイドルになれば印税で一生楽に生きていける？ ほ、本当？ …は、話を聞かせてもらおうじゃないか",
+            "えっ！？ 飴くれるの？ ありがと～っ！ " + userName + "プロデューサー！！",
+            userName + "プロデューサー。今朝占いで「アイドルのプロデューサーさんは担当アイドルを甘やかすと吉」って言ってたよ～！",
+            "負けてもいいから帰りたい",
+            "(……帰って寝たい)",
+            "次の休みは今日ですか～？",
+            "果報は寝て待てって名言だよね",
+            userName + "プロデューサー、休養も大事な仕事だよっ！！",
+            userName + "プロデューサー。杏、週休8日を希望しま～す",
+            "……も､もう帰りたい",
+            "はぁはぁはぁはぁ…",
+            "人生で一番頑張った気がする",
+            userName + "プロデューサー、無理せず少し休んだら？ うん､絶対それがいいよっ!",
+            userName + "プロデューサー。今日は雨が降るらしいから帰ろうっ！！",
+            "最近､" + userName + "ﾌﾟﾛﾃﾞｭｰｻｰ頑張りすぎじゃない?私､なんだか心配だよ。杏のことは気にしなくていいから､今週は仕事をお休みにしよう?うんうん､それがいいと思うよ",
+            "えっ!?明日は休み?ありがと～っ!" + userName + "ﾌﾟﾛﾃﾞｭｰｻｰ!!",
+            userName + "ﾌﾟﾛﾃﾞｭｰｻｰ｡明日から頑張ることにして､今日は気分転換にｳﾁでｹﾞｰﾑすることにしようよ",
+            "勝負はまた今度にしない?",
+            "ﾌﾟﾛﾃﾞｭｰｻｰ…杏､今日は何やらされるんですか?",
+            "(……帰って寝たい)",
+            "次の休みは今日ですか～?",
+            "ｴﾋﾞで鯛を釣るって名言だよね!",
+            userName + "ﾌﾟﾛﾃﾞｭ-ｻ-、無理は厳禁だよ。さぁ休憩しようっ！",
+            "……も､もう帰りたい",
+            "はぁはぁはぁはぁ…",
+            "ｽﾀﾐﾅがなくなりました。3日くらいで1回復します……多分",
+            userName + "ﾌﾟﾛﾃﾞｭｰｻｰ､続きは明日にしようっ!!"
+        ];
 
-    var userName = getUserName();
+        var anzuMessage = anzuMessages[Math.floor(Math.random() * anzuMessages.length)];
+        var encodeMessage = encodeURI(anzuMessage);
+        var encodeName = encodeURI("双葉杏");
 
-    anzuMessages = [
-        "い、いやだっ！ 私は働かないぞっ！ アイドルだろうとなんだろうと…お断りだーっ！！ ……え？ アイドルになれば印税で一生楽に生きていける？ ほ、本当？ …は、話を聞かせてもらおうじゃないか",
-        "えっ！？ 飴くれるの？ ありがと～っ！ " + userName + "プロデューサー！！",
-        userName + "プロデューサー。今朝占いで「アイドルのプロデューサーさんは担当アイドルを甘やかすと吉」って言ってたよ～！",
-        "負けてもいいから帰りたい",
-        "(……帰って寝たい)",
-        "次の休みは今日ですか～？",
-        "果報は寝て待てって名言だよね",
-        userName + "プロデューサー、休養も大事な仕事だよっ！！",
-        userName + "プロデューサー。杏、週休8日を希望しま～す",
-        "……も､もう帰りたい",
-        "はぁはぁはぁはぁ…",
-        "人生で一番頑張った気がする",
-        userName + "プロデューサー、無理せず少し休んだら？ うん､絶対それがいいよっ!",
-        userName + "プロデューサー。今日は雨が降るらしいから帰ろうっ！！",
-        "最近､" + userName + "ﾌﾟﾛﾃﾞｭｰｻｰ頑張りすぎじゃない?私､なんだか心配だよ。杏のことは気にしなくていいから､今週は仕事をお休みにしよう?うんうん､それがいいと思うよ",
-        "えっ!?明日は休み?ありがと～っ!" + userName + "ﾌﾟﾛﾃﾞｭｰｻｰ!!",
-        userName + "ﾌﾟﾛﾃﾞｭｰｻｰ｡明日から頑張ることにして､今日は気分転換にｳﾁでｹﾞｰﾑすることにしようよ",
-        "勝負はまた今度にしない?",
-        "ﾌﾟﾛﾃﾞｭｰｻｰ…杏､今日は何やらされるんですか?",
-        "(……帰って寝たい)",
-        "次の休みは今日ですか～?",
-        "ｴﾋﾞで鯛を釣るって名言だよね!",
-        userName + "ﾌﾟﾛﾃﾞｭ-ｻ-、無理は厳禁だよ。さぁ休憩しようっ！",
-        "……も､もう帰りたい",
-        "はぁはぁはぁはぁ…",
-        "ｽﾀﾐﾅがなくなりました。3日くらいで1回復します……多分",
-        userName + "ﾌﾟﾛﾃﾞｭｰｻｰ､続きは明日にしようっ!!"
-    ];
-
-    var anzuMessage = anzuMessages[Math.floor(Math.random() * anzuMessages.length)];
-    var encodeMessage = encodeURI(anzuMessage);
-    var encodeName = encodeURI("双葉杏");
-
-    var https = require('https');
-    var url = "https://slack.com/api/chat.postMessage?token=" + process.env.token + "&channel=%23" + process.env.botChannel + "&text=" + encodeMessage + "&username=" + encodeName + "&icon_emoji=%3Aanzu_futaba%3A&pretty=1";
-    https.get(url);
-
+        var https = require('https');
+        var url = "https://slack.com/api/chat.postMessage?token=" + process.env.token + "&channel=%23" + process.env.botChannel + "&text=" + encodeMessage + "&username=" + encodeName + "&icon_emoji=%3Aanzu_futaba%3A&pretty=1";
+        https.get(url);
+    });
 });
 
 controller.hears(['iPhone10'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
