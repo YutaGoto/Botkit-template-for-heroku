@@ -496,9 +496,13 @@ controller.hears(['(.+)って呼んで'], 'direct_message,direct_mention,mention
 
 controller.hears([':anzu_futaba:'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
 
-    var userName = bot.api.users.info({user: message.user}, function (err, info) {
-        return info.user.name;
-    });
+    function getUserName() {
+        bot.api.users.info({user: message.user}, function (err, info) {
+            return info.user.name;
+        });
+    }
+
+    var userName = getUserName();
 
     anzuMessages = [
         "い、いやだっ！ 私は働かないぞっ！ アイドルだろうとなんだろうと…お断りだーっ！！ ……え？ アイドルになれば印税で一生楽に生きていける？ ほ、本当？ …は、話を聞かせてもらおうじゃないか",
