@@ -497,7 +497,7 @@ controller.hears(['(.+)って呼んで'], 'direct_message,direct_mention,mention
 controller.hears([':anzu_futaba:'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
 
     bot.api.users.info({user: message.user}, function (err, info) {
-        userName = info.user.name;
+        var userName = info.user.name;
     });
 
     anzuMessages = [
