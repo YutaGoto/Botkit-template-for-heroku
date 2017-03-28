@@ -457,8 +457,7 @@ controller.hears(['(.+)って呼んで'], 'direct_message,direct_mention,mention
     // message.match[1] には、hearsの正規表現にマッチした単語が入っています。
 
     var name_from_msg = message.match[1];
-    console.log(message);
-
+    console.log(controller);
 
     // まず、controller.storage.users.getで、ユーザーデータを取得します。
 
