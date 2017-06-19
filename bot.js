@@ -49,7 +49,7 @@ controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', func
     // bot.reply()で、botに発言をさせます。
     var notifyTalk = [
         '`biz ○○` とつぶやくと、意識高い系に翻訳してくれます。',
-        '`:anzu_futaba:` とつぶやくと、双葉杏さんがなにかしら喋ります。'
+        '`:keitaisokaiseki: ○○` とつぶやくと、○○を形態素解析してくれます。'
     ];
     var joinNotifyTalk = notifyTalk.join("\n");
     bot.reply(message, joinNotifyTalk);
@@ -76,7 +76,8 @@ controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', func
         '`nomu ○○` とつぶやくと、ファイナルファンタジー風に翻訳してくれます。',
         '`biz ○○` とつぶやくと、意識高い系に翻訳してくれます。',
         '`:excite: ○○` とつぶやくと、excite再翻訳してくれます。',
-        '`:translate: ○○` とつぶやくと、excite翻訳してくれます。'
+        '`:translate: ○○` とつぶやくと、excite翻訳してくれます。',
+        '`:keitaisokaiseki: ○○` とつぶやくと、○○を形態素解析してくれます。'
     ];
     var joinFunctionTalk = functionTalk.join("\n");
     bot.reply(message, joinFunctionTalk);
@@ -492,6 +493,31 @@ controller.hears(['(.+)って呼んで'], 'direct_message,direct_mention,mention
 
     });
 
+});
+
+controller.hears([':keitaisokaiseki:'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
+    var kuromoji = require('kuromoji');
+
+    // この builder が辞書やら何やらをみて、形態素解析機を造ってくれるオブジェクトです。
+    var builder = kuromoji.builder({
+        // ここで辞書があるパスを指定します。今回は kuromoji.js 標準の辞書があるディレクトリを指定
+        dicPath: './node_modules/kuromoji/dict'
+    });
+
+    var thing = message.match[1];
+    var encodeWord = encodeURI(thing);
+    bot.reply(message, thing + "を形態素解析しています。");
+    bot.startConversation(message, function (err, convo) {
+        builder.build(function(err, tokenizer) {
+            // 辞書がなかったりするとここでエラーになります(´・ω・｀)
+            if(err) { throw err; }
+            // tokenizer.tokenize に文字列を渡すと、その文を形態素解析してくれます。
+            var tokens = tokenizer.tokenize(thing);
+            tokens.forEach(function(v) {
+                console.log(v.surface_form + ':' + v.pos);
+            });
+        });
+    });
 });
 
 controller.hears([':anzu_futaba:'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
