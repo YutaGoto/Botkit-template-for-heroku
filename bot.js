@@ -578,6 +578,32 @@ controller.hears([':anzu_futaba:'], 'direct_message,direct_mention,mention,ambie
     });
 });
 
+controller.hears([':serval-chan:'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
+    var fs = require('fs');
+    var markov = require('markov');
+
+    var m = markov(1);
+    var s = fs.createReadStream(__dirname + '/serval.txt');
+
+    m.seed(s, function () {
+        while(true) {
+            var r = Math.floor( Math.random() * 10 + 1 );
+            var message = '';
+            for (var i = 0; i <= r; i++) {
+                message = message + m.respond('').join('');
+            }
+            if (message != '') { break; }
+        }
+    });
+
+    var encodeMessage = encodeURI(message);
+    var encodeName = encodeURI("サーバルちゃん");
+
+    var https = require('https');
+    var url = "https://slack.com/api/chat.postMessage?token=" + process.env.token + "&channel=%23" + process.env.botChannel + "&text=" + encodeMessage + "&username=" + encodeName + "&icon_emoji=%3Aserval-chan%3A&pretty=1";
+    https.get(url);
+});
+
 controller.hears(['iPhone10'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
 
     bot.reply(message, "iPhone10!!!");
