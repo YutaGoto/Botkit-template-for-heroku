@@ -100,8 +100,13 @@ controller.hears(['nomu (.*)'], 'direct_message,ambient', function (bot, message
         });
 
         form.find('input[type=submit]').click(function (err, $, res, body) {
-            var m = $('textarea[name=after1]').val();
-            bot.reply(message, m);
+            try {
+                var m = $('textarea[name=after1]').val();
+                bot.reply(message, m);
+            } catch (e) {
+                bot.reply(message, 'エラーだよ！');
+                console.log(e);
+            }
         });
     })
 });
@@ -121,8 +126,13 @@ controller.hears(['biz (.*)'], 'direct_message,ambient', function (bot, message)
         });
 
         form.find('input[type=submit]').click(function (err, $, res, body) {
-            var m = $('textarea[name=after]').val();
-            bot.reply(message, m);
+            try {
+                var m = $('textarea[name=after]').val();
+                bot.reply(message, m);
+            } catch (e) {
+                bot.reply(message, 'エラーだよ！');
+                console.log(e);
+            }
         });
     });
 });
