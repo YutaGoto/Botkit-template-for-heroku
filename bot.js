@@ -514,7 +514,8 @@ controller.hears([':keitaisokaiseki:'], 'direct_message,direct_mention,mention,a
         dicPath: './node_modules/kuromoji/dict'
     });
 
-    var thing = message.match[1];
+    var matches = message.text.match(/:keitaisokaiseki: ?(.*)/i);
+    var thing = matches[1];
     var encodeWord = encodeURI(thing);
     bot.reply(message, thing + "を形態素解析しています。");
     bot.startConversation(message, function (err, convo) {
