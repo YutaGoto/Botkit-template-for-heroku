@@ -25,3 +25,7 @@ You can get started your Botkit-powered bot right now. just click the button! �
 * It can reply hello and good morning.
 * It can play Rock-Paper-Scissors game.
 * It can say other sentences.
+
+## サーバルちゃんのセリフ
+
+<https://github.com/akahuku/kemono-friends-dialogs> お借りしました。

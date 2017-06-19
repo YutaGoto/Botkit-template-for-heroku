@@ -49,7 +49,8 @@ controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', func
     // bot.reply()で、botに発言をさせます。
     var notifyTalk = [
         '`biz ○○` とつぶやくと、意識高い系に翻訳してくれます。',
-        '`:keitaisokaiseki: ○○` とつぶやくと、○○を形態素解析してくれます。'
+        '`:keitaisokaiseki: ○○` とつぶやくと、○○を形態素解析してくれます。',
+        '`:serval-chan:` とつぶやくと、サーバルちゃんがなにかしゃべります'
     ];
     var joinNotifyTalk = notifyTalk.join("\n");
     bot.reply(message, joinNotifyTalk);
@@ -77,7 +78,8 @@ controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', func
         '`biz ○○` とつぶやくと、意識高い系に翻訳してくれます。',
         '`:excite: ○○` とつぶやくと、excite再翻訳してくれます。',
         '`:translate: ○○` とつぶやくと、excite翻訳してくれます。',
-        '`:keitaisokaiseki: ○○` とつぶやくと、○○を形態素解析してくれます。'
+        '`:keitaisokaiseki: ○○` とつぶやくと、○○を形態素解析してくれます。',
+        '`:serval-chan:` とつぶやくと、サーバルちゃんがなにかしゃべります'
     ];
     var joinFunctionTalk = functionTalk.join("\n");
     bot.reply(message, joinFunctionTalk);
