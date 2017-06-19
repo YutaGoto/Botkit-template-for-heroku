@@ -526,7 +526,7 @@ controller.hears([':keitaisokaiseki:'], 'direct_message,direct_mention,mention,a
             var tokens = tokenizer.tokenize(thing);
             var reply_message = "";
             tokens.forEach(function(v) {
-                reply_message = reply_message + v.surface_form + ':' + v.pos + "\n";
+                reply_message = reply_message + v.surface_form + ':' + v.pos + '-' + v.pos_detail_1 + '-' + v.pos_detail_2 + '-' + v.pos_detail_3 + "\n";
             });
             convo.say(reply_message);
             convo.next();
