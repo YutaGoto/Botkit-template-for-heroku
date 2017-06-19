@@ -524,9 +524,12 @@ controller.hears([':keitaisokaiseki:'], 'direct_message,direct_mention,mention,a
             if(err) { throw err; }
             // tokenizer.tokenize に文字列を渡すと、その文を形態素解析してくれます。
             var tokens = tokenizer.tokenize(thing);
+            var reply_message = "";
             tokens.forEach(function(v) {
-                console.log(v.surface_form + ':' + v.pos);
+                reply_message = reply_message + v.surface_form + ':' + v.pos + "\n";
             });
+            convo.say(reply_message);
+            convo.next();
         });
     });
 });
