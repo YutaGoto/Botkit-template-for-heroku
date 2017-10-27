@@ -61,7 +61,6 @@ controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', func
         '`じゃんけん` と呼びかけると、じゃんけんをすることができます。',
         '`詳しい天気` と呼びかけると、今の詳しい天気予報をお知らせします。',
         '`天気` と呼びかけると、18時以前は今日の・18時以降は明日の天気予報をお知らせします。',
-        '`なす` とつぶやくと、なすの反応が来ます。',
         '`おみくじ` と呼びかけると、その日のおみくじできます。',
         '`旅行先` と呼びかけると、おすすめの旅行先を教えてくれます。',
         '`○○って呼んで` と呼びかけると、○○にある文字列であなたの名前を忘れるまで覚えます。',
@@ -650,23 +649,6 @@ controller.hears(['ハイタッチ'], 'direct_message,direct_mention,mention', f
         timestamp: message.ts,
         channel: message.channel,
         name: 'raising_hand', // ここで絵文字名を指定します (例 : smilely, muscle など)
-    }, function (err, res) {
-        if (err) {
-            bot.botkit.log('Failed to add emoji reaction :(', err); // エラーが出たとき用の出力
-        }
-    });
-
-});
-
-controller.hears(['なす', 'ナス', '茄子', 'なすび'], 'direct_message,direct_mention,mention', function (bot, message) {
-
-    bot.reply(message, ':oguri:');
-
-    // 絵文字リアクションを追加
-    bot.api.reactions.add({
-        timestamp: message.ts,
-        channel: message.channel,
-        name: 'oguri', // ここで絵文字名を指定します (例 : smilely, muscle など)
     }, function (err, res) {
         if (err) {
             bot.botkit.log('Failed to add emoji reaction :(', err); // エラーが出たとき用の出力
