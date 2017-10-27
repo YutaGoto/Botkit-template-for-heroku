@@ -49,8 +49,6 @@ controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', func
     // bot.reply()で、botに発言をさせます。
     var notifyTalk = [
         '`biz ○○` とつぶやくと、意識高い系に翻訳してくれます。',
-        '`:keitaisokaiseki: ○○` とつぶやくと、○○を形態素解析してくれます。',
-        '`:serval-chan:` とつぶやくと、サーバルちゃんがなにかしゃべります'
     ];
     var joinNotifyTalk = notifyTalk.join("\n");
     bot.reply(message, joinNotifyTalk);
@@ -60,13 +58,10 @@ controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', func
 controller.hears(['機能一覧'], 'direct_message,direct_mention,mention', function (bot, message) {
 
     var functionTalk = [
-        '`こんにちは`, `おはよう` にはいくつかのパターンの反応をします。',
         '`じゃんけん` と呼びかけると、じゃんけんをすることができます。',
         '`詳しい天気` と呼びかけると、今の詳しい天気予報をお知らせします。',
         '`天気` と呼びかけると、18時以前は今日の・18時以降は明日の天気予報をお知らせします。',
         '`なす` とつぶやくと、なすの反応が来ます。',
-        '`iPhone10` とつぶやくと、iPhone10っぽい反応をします。',
-        '`:anzu_futaba:` とつぶやくと、双葉杏さんがなにかしら喋ります。',
         '`おみくじ` と呼びかけると、その日のおみくじできます。',
         '`旅行先` と呼びかけると、おすすめの旅行先を教えてくれます。',
         '`○○って呼んで` と呼びかけると、○○にある文字列であなたの名前を忘れるまで覚えます。',
@@ -202,36 +197,6 @@ controller.hears(['お御籤', '御御籤', 'お神籤', '御神籤', 'おみく
     var omikujiResult = omikujiArray[Math.floor(Math.random() * omikujiArray.length)];
 
     bot.reply(message, '*' + omikujiResult + '*');
-});
-
-controller.hears(['こんにちは'], 'direct_message,direct_mention,mention', function (bot, message) {
-
-    // bot.reply()で、botに発言をさせます。
-    var helloTalk = [
-        'こんにちは！私は *Botkit製のBot* です！',
-        'こんにちは！調子はいかがですか？',
-        'こんにちは！ :oguri: ',
-        'こんにちは！ `○○って呼んで`って話しかけると、名前を忘れるまで覚えますよ!',
-        'こんにちは！こんにちは！こんにちは！こんにちは！こんにちは！',
-    ];
-    var selectHelloTalk = helloTalk[Math.floor(Math.random() * helloTalk.length)];
-    bot.reply(message, selectHelloTalk);
-
-});
-
-controller.hears(['おはよう'], 'direct_message,direct_mention,mention', function (bot, message) {
-
-    var today = new Date().toLocaleDateString();
-    var morningTalk = [
-        'おはようございます！今日は' + today + 'です。',
-        'おはようございます！今日も一日頑張るぞい！',
-        'おはようございます！今日も張り切ってまいりましょう！',
-        'おはようございます！ご機嫌いかがですか？',
-        'おはようございます！朝ごはんは食べましたか？'
-    ];
-    var selectMorningTalk = morningTalk[Math.floor(Math.random() * morningTalk.length)];
-    bot.reply(message, selectMorningTalk);
-
 });
 
 controller.hears(['くわしい天気', '詳しい天気'], 'direct_message,direct_mention,mention', function (bot, message) {
@@ -447,7 +412,7 @@ controller.hears(['(.+)でお店を検索'], 'direct_message,direct_mention,ment
                 if (r.shop) {
                     if (r.shop.length > 0) {
                         r.shop.forEach(function(val) {
-                            shopArray.push(val.name + ' : ' + val.urls.pc);
+                            shopArray.push(val.name + ' : `' + val.urls.pc + '`');
                         });
                         convo.say(shopArray.join('\n'));
                         convo.next();
@@ -533,50 +498,6 @@ controller.hears([':keitaisokaiseki:'], 'direct_message,direct_mention,mention,a
             convo.say(reply_message);
             convo.next();
         });
-    });
-});
-
-controller.hears([':anzu_futaba:'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
-
-    bot.api.users.info({user: message.user}, function (err, info) {
-        var userName =  info.user.name;
-        anzuMessages = [
-            "い、いやだっ！ 私は働かないぞっ！ アイドルだろうとなんだろうと…お断りだーっ！！ ……え？ アイドルになれば印税で一生楽に生きていける？ ほ、本当？ …は、話を聞かせてもらおうじゃないか",
-            "えっ！？ 飴くれるの？ ありがと～っ！ " + userName + "プロデューサー！！",
-            userName + "プロデューサー。今朝占いで「アイドルのプロデューサーさんは担当アイドルを甘やかすと吉」って言ってたよ～！",
-            "負けてもいいから帰りたい",
-            "(……帰って寝たい)",
-            "次の休みは今日ですか～？",
-            "果報は寝て待てって名言だよね",
-            userName + "プロデューサー、休養も大事な仕事だよっ！！",
-            userName + "プロデューサー。杏、週休8日を希望しま～す",
-            "……も､もう帰りたい",
-            "はぁはぁはぁはぁ…",
-            "人生で一番頑張った気がする",
-            userName + "プロデューサー、無理せず少し休んだら？ うん､絶対それがいいよっ!",
-            userName + "プロデューサー。今日は雨が降るらしいから帰ろうっ！！",
-            "最近､" + userName + "ﾌﾟﾛﾃﾞｭｰｻｰ頑張りすぎじゃない?私､なんだか心配だよ。杏のことは気にしなくていいから､今週は仕事をお休みにしよう?うんうん､それがいいと思うよ",
-            "えっ!?明日は休み?ありがと～っ!" + userName + "ﾌﾟﾛﾃﾞｭｰｻｰ!!",
-            userName + "ﾌﾟﾛﾃﾞｭｰｻｰ｡明日から頑張ることにして､今日は気分転換にｳﾁでｹﾞｰﾑすることにしようよ",
-            "勝負はまた今度にしない?",
-            "ﾌﾟﾛﾃﾞｭｰｻｰ…杏､今日は何やらされるんですか?",
-            "(……帰って寝たい)",
-            "次の休みは今日ですか～?",
-            "ｴﾋﾞで鯛を釣るって名言だよね!",
-            userName + "ﾌﾟﾛﾃﾞｭ-ｻ-、無理は厳禁だよ。さぁ休憩しようっ！",
-            "……も､もう帰りたい",
-            "はぁはぁはぁはぁ…",
-            "ｽﾀﾐﾅがなくなりました。3日くらいで1回復します……多分",
-            userName + "ﾌﾟﾛﾃﾞｭｰｻｰ､続きは明日にしようっ!!"
-        ];
-
-        var anzuMessage = anzuMessages[Math.floor(Math.random() * anzuMessages.length)];
-        var encodeMessage = encodeURI(anzuMessage);
-        var encodeName = encodeURI("双葉杏");
-
-        var https = require('https');
-        var url = "https://slack.com/api/chat.postMessage?token=" + process.env.token + "&channel=%23" + process.env.botChannel + "&text=" + encodeMessage + "&username=" + encodeName + "&icon_emoji=%3Aanzu_futaba%3A&pretty=1";
-        https.get(url);
     });
 });
 
