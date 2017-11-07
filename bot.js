@@ -48,7 +48,7 @@ controller.hears(['お知らせ'], 'direct_message,direct_mention,mention', func
 
     // bot.reply()で、botに発言をさせます。
     var notifyTalk = [
-        '`biz ○○` とつぶやくと、意識高い系に翻訳してくれます。',
+        '`わん` とつぶやくと、しばいぬの画像が送られてきます。。',
     ];
     var joinNotifyTalk = notifyTalk.join("\n");
     bot.reply(message, joinNotifyTalk);
@@ -310,6 +310,26 @@ controller.hears(['(.+)って何'], 'direct_message,direct_mention,mention', fun
                     convo.next();
                 } else {
                     convo.say(v[0].body);
+                    convo.next();
+                }
+            });
+        });
+    });
+});
+
+controller.hears(['わん'], 'direct_message,direct_mention,mention,ambient', function (bot, message) {
+    bot.startConversation(message, function (err, convo) {
+        var http = require('http');
+        http.get("http://shibe.online/api/shibes?count=1&urls=true&httpsUrls=false", function (result) {
+            var body = '';
+            result.setEncoding('utf8');
+            result.on('data', function(data) {
+                body += data;
+            });
+            result.on('end', function(data) {
+                var v = JSON.parse(body);
+                if (v === null) {
+                    convo.say(.[0]);
                     convo.next();
                 }
             });
