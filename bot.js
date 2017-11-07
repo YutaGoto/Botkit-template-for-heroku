@@ -329,7 +329,7 @@ controller.hears(['わん'], 'direct_message,direct_mention,mention,ambient', fu
             result.on('end', function(data) {
                 var v = JSON.parse(body);
                 if (v === null) {
-                    convo.say(.[0]);
+                    convo.say(v[0]);
                     convo.next();
                 }
             });
